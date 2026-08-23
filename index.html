@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aldia</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+
+  <section id="Home">
+    <br>
+    <img src="imagenes/AldiaLogo.jpeg" alt="Aldia Logo">
+
+    <br>
+    <h1>Aldia</h1>
+    <p>Necesitas Internet</p>
+
+    <br>
+    <p>
+    <h1>Registre su vehículo</h1>
+    </p>
+
+    <br>
+    <button>Carro</button>
+    <button>Mato</button>
+    <button>Camion</button>
+
+    <br>
+    <label for="Marca y modelo">Marca y modelo</label>
+    <input type="text" id="Marca y modelo">
+
+    <label for="Anio">Anio</label>
+    <input type="number" id="Anio">
+
+    <label for="Placa">Placa</label>
+    <input type="text" id="Placa">
+
+    <label for="Kilometraje">Kilometraje</label>
+    <input type="text" id="Kilometraje">
+
+    <br>
+    <button>Registrar</button>
+
+  </section>
+
+  <hr class="separador-seccion">
+
+  <section id="Tablero">
+    <h1>[MARCA Y MODELO] [anio]</h1>
+
+    <p>
+    <h1>[PLACA]</h1>
+    </p>
+    <br>
+
+    <p>84500 km</p>
+
+    <h2>Proximo servicio</h2>
+    <p>Cambio de aceite</p>
+
+    <button>Actualizar</button>
+
+    <h1>Estado de mantenimiento</h1>
+    <br>
+
+    <button>Tablero</button>
+    <button>Bitacora</button>
+    <button>Gastos</button>
+    <button>Documentos</button>
+  </section>
+
+  <hr class="separador-seccion">
+
+  <section id="ActualizarKilometraje">
+    <h1>Actualizar Kilometraje</h1>
+    <p>[KILOMETRAJE ACTUAL] km</p>
+    <h2>Actualizado hace [TIEMPO]</h2>
+    <br>
+
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <button>7</button>
+    <button>8</button>
+    <button>9</button>
+    <button>0</button>
+    <button>[ borrar ]</button>
+    <button>[ Guardar ]</button>
+  </section>
+
+  <hr class="separador-seccion">
+
+  <section id="InformacionMantenimiento">
+
+    <h1>[Mantenimiento]</h1>
+    <p>Cada [intervalo] [unidad de intervalo]</p>
+    <br>
+
+    <h2>Faltan [intervalo] [unidad de intervalo]</h2>
+    <p>Se hace a los [intervalo] [unidad de intervalo]</p>
+    <br>
+
+    <h2>Último registro</h2>
+    <p>[FECHA REGISTRO] [COSTO]</p>
+    <br>
+
+    <h2>Historico</h2>
+    <p>[FECHA REGISTRO] [COSTO]</p>
+    <br>
+
+    <h2>Registrar este servicio</h2>
+
+
+  </section>
+
+  <hr class="separador-seccion">
+
+  <section id="ActualizarServicioMantenimiento">
+
+    <button>Cancelar</button>
+    <p>Nuevo regitro</p>
+    <button>[Guardar]</button>
+    <br>
+
+    <h2>Tipo de registro</h2>
+    <p>[TIPO DE REGISTRO]</p>
+    <br>
+
+    <label for="FechaActual">Fecha actual</label>
+    <input type="date" id="FechaActual">
+
+    <label for="KilometrajeActual">Kilometraje Actual</label>
+    <input type="number" id="KilometrajeActual">
+    <br>
+
+    <h2>Taller</h2>
+    <label for="Taller">Taller</label>
+    <input type="text" id="Taller">
+    <br>
+
+    <Label for="Costo">Costo</Label>
+    <input type="number" id="Costo">
+    <br>
+
+    <h2>Notas</h2>
+    <label for="Notas">Nota</label>
+    <input type="text" id="Notas">
+    <br>
+
+    <h2>Foto de factura</h2>
+    <button>Subir foto</button>
+    <p>[Estado de la operacion]</p>
+
+  </section>
+
+  <section id="Bitacora">
+    <h1>Bitácora</h1>
+    <p>[cantidad de registros] registros desde [Fecha de registro]</p>
+    <br>
+
+    <button>Todo</button>
+    <button>Aceita</button>
+    <button>Frenos</button>
+    <button>LLantes</button>
+
+    <br>
+    <H2>Anio</H2>
+    <p>[FECHA REGISTRO] [REGISTRO] [COSTO]</p>
+
+    <br>
+    <button>Tablero</button>
+    <button>Bitacora</button>
+    <button>Gastos</button>
+    <button>Documentos</button>
+
+  </section>
+
+  <hr class="separador-seccion">
+
+  <section id="Gastos">
+    <h1>Gastos</h1>
+    <button>[anio 1]</button>
+    <button>[anio 2]</button>
+    <button>[anio 3]</button>
+    <br>
+
+    <h2>Gastado en [anio seleccionado]</h2>
+    <p>[Cantidad total gastos]</p>
+    <br>
+
+    <h2>Por categoria</h2>
+    <button>Mantenimiento</button>
+    <button>Documentos</button>
+    <button>Otros</button>
+    <br>
+
+    <h2>Por mes</h2>
+    <p>[MES] [CANTIDAD]</p>\
+
+    <br>
+    <button>Tablero</button>
+    <button>Bitacora</button>
+    <button>Gastos</button>
+    <button>Documentos</button>
+  </section>
+
+  <hr class="separador-seccion">
+
+  <section id="Documentos">
+    <h1>Documentos</h1>
+    <p>No te precoupes...</p>
+    <br>
+
+    <h2>[Documento]</h2>
+    <p>[Estado de documento]</p>
+    <p>Faltan [Dias para vencer]</p>
+    <br>
+
+    <h2>[Documento]</h2>
+    <p>[Estado de documento]</p>
+    <p>Faltan [Dias para vencer]</p>
+    <br>
+    <h2>[Documento]</h2>
+    <p>[Estado de documento]</p>
+    <p>Faltan [Dias para vencer]</p>
+    <br>
+
+    <p>Te recordamos [Dias] antes</p>
+    <br>
+
+    <button>Tablero</button>
+    <button>Bitacora</button>
+    <button>Gastos</button>
+    <button>Documentos</button>
+  </section>
+
+</body>
+
+</html>
