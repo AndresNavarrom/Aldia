@@ -243,6 +243,23 @@ p {
   cursor: pointer;
 }
 
+/* logo de la app, enfrentado al boton de volver.
+   en escala de grises igual que en el formulario: el wireframe es
+   monocromo a proposito y el ambar de la marca rompia la paleta */
+.mant-cabecera::after {
+  content: "";
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 40px;
+  height: 40px;
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-pill);
+  filter: grayscale(1) contrast(1.15);
+}
+
 /* testigo de estado, medio lleno = "pronto".
    el wireframe codifica el estado por forma y no por color */
 .mant-testigo {
