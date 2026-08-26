@@ -6,9 +6,13 @@
   --color-muted: #6b7280;
   --color-border: #14151a;
   --color-accent: #3a6ea5;
-  --color-border: #14151a;
   /* azul confiable, tipo tablero de auto */
   --color-accent-dark: #234a70;
+
+  --color-line: #d4d7dc;
+  /* borde suave: contorno de las tarjetas del wireframe */
+  --color-line-strong: #a8adb5;
+  /* borde suave pero visible: campos de formulario */
 
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -140,4 +144,24 @@ p {
   font-size: 1.1rem;
   color: var(--color-muted);
   margin-top: 2px;
+}
+
+/* ============================================================
+   Vistas 4 y 5 - base comun de las pantallas de mantenimiento
+   ============================================================ */
+
+#InformacionMantenimiento,
+#ActualizarServicioMantenimiento {
+  max-width: var(--max-width-phone);
+  /* nunca crecer mas de X cantidad */
+  margin: 0 auto;
+  /* centrar la pantalla sobre el fondo gris del body */
+  padding: 0 var(--space-2) var(--space-3);
+  background: var(--color-bg);
+}
+
+/* los <br> del HTML se ignoran: el espaciado se controla con margenes */
+#InformacionMantenimiento br,
+#ActualizarServicioMantenimiento br {
+  display: none;
 }
