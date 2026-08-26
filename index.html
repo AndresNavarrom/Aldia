@@ -165,39 +165,56 @@
 
   <section id="ActualizarServicioMantenimiento">
 
-    <button>Cancelar</button>
-    <p>Nuevo regitro</p>
-    <button>[Guardar]</button>
-    <br>
+    <header class="reg-barra">
+      <button class="reg-cancelar">Cancelar</button>
+      <p class="reg-titulo">Nuevo registro</p>
+      <button class="reg-guardar">Guardar</button>
+    </header>
 
-    <h2>Tipo de registro</h2>
-    <p>[TIPO DE REGISTRO]</p>
-    <br>
+    <div class="reg-campos">
 
-    <label for="FechaActual">Fecha actual</label>
-    <input type="date" id="FechaActual">
+      <div class="reg-campo">
+        <label for="TipoServicio">Tipo de servicio</label>
+        <input type="text" id="TipoServicio" value="Cambio de aceite">
+      </div>
 
-    <label for="KilometrajeActual">Kilometraje Actual</label>
-    <input type="number" id="KilometrajeActual">
-    <br>
+      <div class="reg-campo reg-campo-mitad">
+        <label for="FechaActual">Fecha</label>
+        <input type="text" id="FechaActual" value="5 ago 2026">
+      </div>
 
-    <h2>Taller</h2>
-    <label for="Taller">Taller</label>
-    <input type="text" id="Taller">
-    <br>
+      <div class="reg-campo reg-campo-mitad">
+        <label for="KilometrajeActual">Kilometraje</label>
+        <input type="text" id="KilometrajeActual" value="84.350">
+      </div>
 
-    <Label for="Costo">Costo</Label>
-    <input type="number" id="Costo">
-    <br>
+      <div class="reg-campo">
+        <label for="Taller">Taller o lugar</label>
+        <input type="text" id="Taller" value="Taller El Poblado">
+      </div>
 
-    <h2>Notas</h2>
-    <label for="Notas">Nota</label>
-    <input type="text" id="Notas">
-    <br>
+      <div class="reg-campo">
+        <label for="Costo">Costo</label>
+        <input type="text" id="Costo" value="$ 195.000">
+      </div>
 
-    <h2>Foto de factura</h2>
-    <button>Subir foto</button>
-    <p>[Estado de la operacion]</p>
+      <div class="reg-campo">
+        <label for="Notas">Notas</label>
+        <textarea id="Notas" rows="3">Aceite sintético 5W-30, filtro nuevo.
+Revisar fuga leve en el próximo.</textarea>
+      </div>
+
+      <div class="reg-campo">
+        <span class="reg-rotulo">Foto de la factura</span>
+        <div class="reg-fotos">
+          <span class="reg-miniatura">factura</span>
+          <button class="reg-agregar" aria-label="Agregar foto">+</button>
+        </div>
+      </div>
+
+      <p class="reg-aviso">Al guardar se escribe el registro en localStorage</p>
+
+    </div>
 
   </section>
 
