@@ -262,3 +262,175 @@ p {
   cursor: pointer;
   margin: 0;
 }
+
+/* ============================================================
+   Vista 5 - Nuevo registro de servicio
+   ============================================================ */
+
+#ActualizarServicioMantenimiento {
+  /* rejilla de 4 columnas: sostiene la barra superior de tres zonas
+     y la pareja fecha / kilometraje a media pantalla cada una */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: var(--space-1);
+}
+
+/* por defecto cada elemento ocupa el ancho completo */
+#ActualizarServicioMantenimiento>* {
+  grid-column: 1 / -1;
+}
+
+/* --- barra superior: Cancelar | Nuevo registro | Guardar ---
+   la linea inferior se dibuja con un pseudo-elemento que ocupa toda la
+   fila 1, para que no la corten los huecos entre columnas */
+#ActualizarServicioMantenimiento::before {
+  content: "";
+  grid-area: 1 / 1 / 2 / -1;
+  border-bottom: 1.5px solid var(--color-line);
+}
+
+#ActualizarServicioMantenimiento>button:nth-of-type(1),
+#ActualizarServicioMantenimiento>button:nth-of-type(2) {
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: var(--space-2) 0;
+  cursor: pointer;
+}
+
+#ActualizarServicioMantenimiento>button:nth-of-type(1) {
+  grid-area: 1 / 1 / 2 / 2;
+  justify-self: start;
+  color: var(--color-muted);
+}
+
+#ActualizarServicioMantenimiento>p:nth-of-type(1) {
+  grid-area: 1 / 2 / 2 / 4;
+  align-self: center;
+  text-align: center;
+  font-weight: 700;
+  margin: 0;
+}
+
+#ActualizarServicioMantenimiento>button:nth-of-type(2) {
+  grid-area: 1 / 4 / 2 / 5;
+  justify-self: end;
+  font-weight: 700;
+}
+
+/* --- rotulos: los <h2> de seccion y las <label> de cada campo --- */
+#ActualizarServicioMantenimiento>h2,
+#ActualizarServicioMantenimiento>label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin: var(--space-2) 0 var(--space-1);
+}
+
+/* los <h2> "Taller" y "Notas" repiten el texto de su propia <label>;
+   se conserva la <label>, que es la que describe el campo */
+#ActualizarServicioMantenimiento>h2:nth-of-type(2),
+#ActualizarServicioMantenimiento>h2:nth-of-type(3) {
+  display: none;
+}
+
+#ActualizarServicioMantenimiento>h2:nth-of-type(1) {
+  grid-row: 2;
+}
+
+/* --- campo de solo lectura: tipo de registro --- */
+#ActualizarServicioMantenimiento>p:nth-of-type(2) {
+  grid-row: 3;
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin: 0;
+}
+
+/* --- campos de texto --- */
+#ActualizarServicioMantenimiento>input {
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  width: 100%;
+}
+
+/* fecha y kilometraje comparten fila, a media pantalla cada uno.
+   la fila va declarada a mano porque sin contenedor el reparto
+   automatico de la rejilla los dejaria escalonados */
+#ActualizarServicioMantenimiento>label:nth-of-type(1) {
+  grid-area: 4 / 1 / 5 / 3;
+}
+
+#ActualizarServicioMantenimiento>label:nth-of-type(2) {
+  grid-area: 4 / 3 / 5 / -1;
+}
+
+#ActualizarServicioMantenimiento>input:nth-of-type(1) {
+  grid-area: 5 / 1 / 6 / 3;
+}
+
+#ActualizarServicioMantenimiento>input:nth-of-type(2) {
+  grid-area: 5 / 3 / 6 / -1;
+}
+
+/* taller, costo y notas: una fila para el rotulo y otra para el campo */
+#ActualizarServicioMantenimiento>label:nth-of-type(3) {
+  grid-row: 6;
+}
+
+#ActualizarServicioMantenimiento>input:nth-of-type(3) {
+  grid-row: 7;
+}
+
+#ActualizarServicioMantenimiento>label:nth-of-type(4) {
+  grid-row: 8;
+}
+
+#ActualizarServicioMantenimiento>input:nth-of-type(4) {
+  grid-row: 9;
+}
+
+#ActualizarServicioMantenimiento>label:nth-of-type(5) {
+  grid-row: 10;
+}
+
+#ActualizarServicioMantenimiento>input:nth-of-type(5) {
+  grid-row: 11;
+  /* la nota es el unico campo de varias lineas del wireframe */
+  padding-bottom: var(--space-4);
+}
+
+/* --- foto de la factura y estado de la operacion ---
+   borde punteado: en el wireframe marca lo que aun no esta resuelto */
+#ActualizarServicioMantenimiento>h2:nth-of-type(4) {
+  grid-row: 12;
+}
+
+#ActualizarServicioMantenimiento>button:nth-of-type(3) {
+  grid-row: 13;
+  justify-self: start;
+  border: 1.5px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: var(--space-3) var(--space-4);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+#ActualizarServicioMantenimiento>p:nth-of-type(3) {
+  grid-row: 14;
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
