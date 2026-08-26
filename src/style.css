@@ -243,10 +243,17 @@ p {
   font-weight: 600;
 }
 
-/* --- fila del historico --- */
-#InformacionMantenimiento p:nth-of-type(4) {
+/* --- filas del historico ---
+   de la cuarta en adelante: asi admite tantos registros como haya
+   sin tener que tocar el CSS cada vez que se agrega uno */
+#InformacionMantenimiento p:nth-of-type(n+4) {
   padding: var(--space-1) 0;
   border-bottom: 1px solid var(--color-line);
+  margin: 0;
+}
+
+/* la ultima fila es la que separa el historico del boton */
+#InformacionMantenimiento p:last-of-type {
   margin-bottom: var(--space-4);
 }
 
