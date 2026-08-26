@@ -165,3 +165,100 @@ p {
 #ActualizarServicioMantenimiento br {
   display: none;
 }
+
+/* ============================================================
+   Vista 4 - Detalle del mantenimiento
+   ============================================================ */
+
+#InformacionMantenimiento {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- cabecera gris: nombre del servicio e intervalo --- */
+#InformacionMantenimiento h1:first-of-type,
+#InformacionMantenimiento p:first-of-type {
+  background: var(--color-surface);
+  /* margen negativo para anular el padding lateral de la seccion
+     y que la banda gris llegue a los dos bordes */
+  margin-left: calc(var(--space-2) * -1);
+  margin-right: calc(var(--space-2) * -1);
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+  text-align: center;
+}
+
+#InformacionMantenimiento h1:first-of-type {
+  padding-top: var(--space-4);
+  font-size: 1.7rem;
+  margin-bottom: 0;
+}
+
+#InformacionMantenimiento p:first-of-type {
+  padding-bottom: var(--space-4);
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+}
+
+/* --- tarjeta "faltan / se hace a los" ---
+   son dos hermanos sin contenedor: el borde de uno continua en el otro
+   para que se lean como una sola tarjeta */
+#InformacionMantenimiento h2:first-of-type {
+  border: 1.5px solid var(--color-line);
+  border-bottom: none;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding: var(--space-2) var(--space-2) 4px;
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#InformacionMantenimiento p:nth-of-type(2) {
+  border: 1.5px solid var(--color-line);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  padding: 0 var(--space-2) var(--space-2);
+  margin: 0 0 var(--space-3);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* --- rotulos de seccion: "Ultimo registro" e "Historico" --- */
+#InformacionMantenimiento h2:nth-of-type(2),
+#InformacionMantenimiento h2:nth-of-type(3) {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-1);
+}
+
+/* --- tarjeta del ultimo registro --- */
+#InformacionMantenimiento p:nth-of-type(3) {
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-weight: 600;
+}
+
+/* --- fila del historico --- */
+#InformacionMantenimiento p:nth-of-type(4) {
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--color-line);
+  margin-bottom: var(--space-4);
+}
+
+/* --- accion principal: "Registrar este servicio" ---
+   hoy es un <h2>; en el wireframe es el boton que lleva a la vista 5 */
+#InformacionMantenimiento h2:nth-of-type(4) {
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  margin: 0;
+}
