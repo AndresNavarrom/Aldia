@@ -8,7 +8,7 @@ body {
   /*controlamos los margenes entre los objetos*/
 }
 
-#home {
+#Home {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
