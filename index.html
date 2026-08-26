@@ -51,31 +51,108 @@
   <hr class="separador-seccion">
 
   <section id="Tablero">
-    <h1>[MARCA Y MODELO] [anio]</h1>
-
-    <h1>[PLACA]</h1>
-    <br>
+    <header class="tablero-header">
+      <div>
+        <h1>Mazda 3 &middot; 2016</h1>
+        <p class="tablero-placa">ABC 123</p>
+      </div>
+      <span class="badge-conexion">Sin conexión</span>
+    </header>
 
     <div class="tablero-resumen">
-
-      <p class="tablero-km">84500 km</p>
-      <div class="tablero-proximo">
-        <h2 class="tablero-servicio">Proximo servicio</h2>
-        <p class="tablero-servicio">Cambio de aceite</p>
-        <div class="barra-progreso">
-          <div class="barra-progreso-relleno" style="width: 70%"></div>
+      <div class="tablero-grafico-km">
+        <!-- SVG for circular progress -->
+        <svg viewBox="0 0 36 36" class="circular-chart">
+          <path class="circle-bg"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path class="circle"
+            stroke-dasharray="70, 100"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <div class="grafico-texto">
+          <strong>84.350</strong>
+          <span>km</span>
         </div>
-        <button class="tablero-actualizar">Actualizar</button>
+      </div>
+      <div class="tablero-proximo">
+        <span class="proximo-label">PRÓXIMO SERVICIO</span>
+        <h2 class="proximo-titulo">Cambio de aceite</h2>
+        <p class="proximo-desc">Faltan 650 km</p>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 75%"></div>
+        </div>
+        <button class="btn-actualizar">Actualizar km</button>
       </div>
     </div>
 
-    <h1>Estado de mantenimiento</h1>
-    <br>
+    <h2 class="seccion-titulo">ESTADO DE MANTENIMIENTOS</h2>
+    <div class="lista-mantenimientos">
+      <div class="item-mant">
+        <div class="mant-icono icon-pronto"></div>
+        <div class="mant-info">
+          <h3>Cambio de aceite</h3>
+          <p>Faltan 650 km de 5.000</p>
+        </div>
+        <span class="badge badge-pronto">Pronto</span>
+      </div>
+      <div class="item-mant">
+        <div class="mant-icono icon-vencido"></div>
+        <div class="mant-info">
+          <h3>Pastillas de freno</h3>
+          <p>Vencido hace 1.200 km</p>
+        </div>
+        <span class="badge badge-vencido">Vencido</span>
+      </div>
+      <div class="item-mant">
+        <div class="mant-icono icon-aldia"></div>
+        <div class="mant-info">
+          <h3>Filtro de aire</h3>
+          <p>Faltan 4.300 km</p>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </div>
+      <div class="item-mant">
+        <div class="mant-icono icon-aldia"></div>
+        <div class="mant-info">
+          <h3>Rotación de llantas</h3>
+          <p>Faltan 5.650 km</p>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </div>
+      <div class="item-mant">
+        <div class="mant-icono icon-aldia"></div>
+        <div class="mant-info">
+          <h3>Líquido de frenos</h3>
+          <p>Faltan 12.000 km</p>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </div>
+    </div>
 
-    <button>Tablero</button>
-    <button>Bitacora</button>
-    <button>Gastos</button>
-    <button>Documentos</button>
+    <nav class="bottom-nav">
+      <button class="nav-item active">
+        <div class="nav-icon"></div>
+        <span>Tablero</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Bitácora</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Gastos</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Documentos</span>
+      </button>
+    </nav>
   </section>
 
   <hr class="separador-seccion">
