@@ -434,3 +434,37 @@ p {
   color: var(--color-muted);
   font-size: 0.85rem;
 }
+
+/* ============================================================
+   Marca Aldia en las cabeceras de mantenimiento
+   ============================================================ */
+
+/* el logo entra desde CSS y no desde el marcado: es decorativo, no
+   aporta informacion que haya que leer. la ruta es relativa a este
+   archivo, que vive en src/ */
+#InformacionMantenimiento h1:first-of-type::before,
+#ActualizarServicioMantenimiento>p:nth-of-type(1)::before {
+  content: "";
+  display: block;
+  margin: 0 auto var(--space-1);
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-pill);
+}
+
+/* en el detalle preside la banda gris */
+#InformacionMantenimiento h1:first-of-type::before {
+  width: 48px;
+  height: 48px;
+}
+
+/* en el formulario va en linea junto al titulo: apilado partiria la
+   barra en dos alturas y descuadraria Cancelar y Guardar */
+#ActualizarServicioMantenimiento>p:nth-of-type(1)::before {
+  display: inline-block;
+  vertical-align: text-bottom;
+  width: 20px;
+  height: 20px;
+  margin: 0 6px 0 0;
+}
