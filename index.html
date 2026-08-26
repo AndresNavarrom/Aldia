@@ -81,23 +81,38 @@
   <hr class="separador-seccion">
 
   <section id="ActualizarKilometraje">
-    <h1>Actualizar Kilometraje</h1>
-    <p>[KILOMETRAJE ACTUAL] km</p>
-    <h2>Actualizado hace [TIEMPO]</h2>
-    <br>
+    <h1>Actualizar kilometraje</h1>
+    <p class="km-subtitle">Es el único dato que hay que mantener al día.</p>
 
-    <button>1</button>
-    <button>2</button>
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
-    <button>8</button>
-    <button>9</button>
-    <button>0</button>
-    <button>[ borrar ]</button>
-    <button>[ Guardar ]</button>
+    <div class="km-display-card">
+      <span class="km-label">KILOMETRAJE ACTUAL</span>
+      <span class="km-value">84.350</span>
+      <span class="km-last-update">última actualización hace 12 días</span>
+    </div>
+
+    <div class="km-numpad">
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="km-empty"></button>
+      <button>0</button>
+      <button class="km-backspace">⌫</button>
+    </div>
+
+    <div class="km-foto-odometro">
+      <strong>Tomar foto del odómetro</strong>
+      <span>Lectura en el dispositivo · función no implementada</span>
+    </div>
+
+    <p class="km-promedio">Promedio: 71 km/día. Sin confirmar muestra &lt;= estimado&gt;</p>
+
+    <button class="km-guardar">Guardar</button>
   </section>
 
   <hr class="separador-seccion">

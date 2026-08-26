@@ -584,3 +584,155 @@ p {
   color: var(--color-muted);
   font-size: 0.85rem;
 }
+
+/* ============================================================
+   Vista – Actualizar Kilometraje
+   ============================================================ */
+
+#ActualizarKilometraje {
+  max-width: var(--max-width-phone);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-2) var(--space-4);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* --- titulo y subtitulo --- */
+#ActualizarKilometraje > h1 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+#ActualizarKilometraje > .km-subtitle {
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  margin: 0 0 var(--space-3);
+}
+
+/* --- tarjeta kilometraje actual --- */
+.km-display-card {
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-3);
+  background: var(--color-surface);
+}
+
+.km-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.km-value {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  color: var(--color-text);
+}
+
+.km-last-update {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* --- teclado numerico 3 columnas --- */
+.km-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: var(--space-3);
+}
+
+.km-numpad button {
+  aspect-ratio: 1.6;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.km-numpad button:active {
+  background: var(--color-line);
+}
+
+/* celda vacia inferior-izquierda */
+.km-numpad .km-empty {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+/* icono borrar */
+.km-numpad .km-backspace {
+  font-size: 1.3rem;
+}
+
+/* --- boton foto odometro --- */
+.km-foto-odometro {
+  border: 1.5px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  margin-bottom: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.km-foto-odometro strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.km-foto-odometro span {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* --- nota de promedio --- */
+.km-promedio {
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+}
+
+/* --- boton guardar --- */
+.km-guardar {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.km-guardar:active {
+  opacity: 0.85;
+}
