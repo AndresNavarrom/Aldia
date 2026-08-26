@@ -214,103 +214,197 @@ p {
    ============================================================ */
 
 #InformacionMantenimiento {
-  display: flex;
-  flex-direction: column;
+  /* cada bloque pone su propio margen lateral: la banda gris de la
+     cabecera y la linea del pie tienen que llegar a los dos bordes */
+  padding: 0;
 }
 
-/* --- cabecera gris: nombre del servicio e intervalo --- */
-#InformacionMantenimiento h1:first-of-type,
-#InformacionMantenimiento p:first-of-type {
+/* --- cabecera gris: volver, testigo de estado, servicio e intervalo --- */
+.mant-cabecera {
+  position: relative;
   background: var(--color-surface);
-  /* margen negativo para anular el padding lateral de la seccion
-     y que la banda gris llegue a los dos bordes */
-  margin-left: calc(var(--space-2) * -1);
-  margin-right: calc(var(--space-2) * -1);
-  padding-left: var(--space-2);
-  padding-right: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-4);
   text-align: center;
 }
 
-#InformacionMantenimiento h1:first-of-type {
-  padding-top: var(--space-4);
-  font-size: 1.7rem;
-  margin-bottom: 0;
+.mant-volver {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
-#InformacionMantenimiento p:first-of-type {
-  padding-bottom: var(--space-4);
+/* testigo de estado, medio lleno = "pronto".
+   el wireframe codifica el estado por forma y no por color */
+.mant-testigo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: var(--space-3) auto var(--space-2);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-bg) 50%, var(--color-text) 50%);
+}
+
+.mant-cabecera h1 {
+  font-size: 1.75rem;
+  margin: 0 0 4px;
+}
+
+.mant-cabecera p {
   color: var(--color-muted);
-  margin-bottom: var(--space-3);
-}
-
-/* --- tarjeta "faltan / se hace a los" ---
-   son dos hermanos sin contenedor: el borde de uno continua en el otro
-   para que se lean como una sola tarjeta */
-#InformacionMantenimiento h2:first-of-type {
-  border: 1.5px solid var(--color-line);
-  border-bottom: none;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  padding: var(--space-2) var(--space-2) 4px;
+  font-size: 1.05rem;
   margin: 0;
-  font-size: 1.5rem;
-  text-align: center;
 }
 
-#InformacionMantenimiento p:nth-of-type(2) {
+/* --- tarjeta de cifras: faltan | se hace a los --- */
+.mant-cifras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   border: 1.5px solid var(--color-line);
-  border-top: none;
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  padding: 0 var(--space-2) var(--space-2);
-  margin: 0 0 var(--space-3);
-  color: var(--color-muted);
-  text-align: center;
+  border-radius: var(--radius-md);
+  margin: var(--space-3) var(--space-2) 0;
+  padding: var(--space-2) 0;
 }
 
-/* --- rotulos de seccion: "Ultimo registro" e "Historico" --- */
-#InformacionMantenimiento h2:nth-of-type(2),
-#InformacionMantenimiento h2:nth-of-type(3) {
-  font-size: 0.75rem;
+.mant-cifra {
+  padding: 0 var(--space-2);
+}
+
+/* la segunda cifra dibuja el separador vertical */
+.mant-cifra+.mant-cifra {
+  border-left: 1.5px solid var(--color-line);
+}
+
+.mant-cifra-rotulo {
+  display: block;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-muted);
-  margin-bottom: var(--space-1);
+  margin-bottom: 6px;
+}
+
+.mant-cifra-valor {
+  display: block;
+  font-size: 1.6rem;
+}
+
+/* --- rotulos de seccion --- */
+.mant-rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin: var(--space-3) var(--space-2) var(--space-1);
 }
 
 /* --- tarjeta del ultimo registro --- */
-#InformacionMantenimiento p:nth-of-type(3) {
+.mant-registro {
   border: 1.5px solid var(--color-line);
   border-radius: var(--radius-md);
+  margin: 0 var(--space-2);
   padding: var(--space-2);
-  margin-bottom: var(--space-3);
-  font-weight: 600;
 }
 
-/* --- filas del historico ---
-   de la cuarta en adelante: asi admite tantos registros como haya
-   sin tener que tocar el CSS cada vez que se agrega uno */
-#InformacionMantenimiento p:nth-of-type(n+4) {
-  padding: var(--space-1) 0;
+/* fecha a la izquierda y costo a la derecha, en la misma linea */
+.mant-registro-titular {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-1);
+  font-size: 1.05rem;
+  margin: 0 0 var(--space-1);
+}
+
+/* la miniatura se alinea abajo, junto a la ultima linea de detalle */
+.mant-registro-cuerpo {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.mant-registro-datos {
+  flex: 1;
+  min-width: 0;
+}
+
+.mant-registro-datos p {
+  color: var(--color-muted);
+  margin: 0 0 4px;
+}
+
+.mant-factura {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+/* --- registros anteriores: fecha | kilometraje | costo --- */
+.mant-historico {
+  list-style: none;
+  margin: 0 var(--space-2);
+  padding: 0;
+}
+
+.mant-historico li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding: var(--space-2) 0;
   border-bottom: 1px solid var(--color-line);
-  margin: 0;
 }
 
-/* la ultima fila es la que separa el historico del boton */
-#InformacionMantenimiento p:last-of-type {
-  margin-bottom: var(--space-4);
+.mant-historico-km {
+  color: var(--color-muted);
 }
 
-/* --- accion principal: "Registrar este servicio" ---
-   hoy es un <h2>; en el wireframe es el boton que lleva a la vista 5 */
-#InformacionMantenimiento h2:nth-of-type(4) {
+.mant-historico-costo {
+  text-align: right;
+}
+
+/* --- nota al pie --- */
+.mant-nota {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: var(--space-2) var(--space-2) var(--space-3);
+}
+
+/* --- accion principal, separada del contenido por una linea --- */
+.mant-pie {
+  display: flex;
+  border-top: 1.5px solid var(--color-line);
+  padding: var(--space-3) var(--space-2);
+}
+
+.mant-registrar {
+  flex: 1;
   padding: var(--space-2);
+  border: none;
   border-radius: var(--radius-md);
   background: var(--color-text);
   color: var(--color-bg);
-  font-size: 1rem;
-  text-align: center;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
-  margin: 0;
 }
 
 /* ============================================================
@@ -486,35 +580,22 @@ p {
 }
 
 /* ============================================================
-   Marca Aldia en las cabeceras de mantenimiento
+   Marca Aldia en la cabecera del formulario
    ============================================================ */
 
 /* el logo entra desde CSS y no desde el marcado: es decorativo, no
    aporta informacion que haya que leer. la ruta es relativa a este
-   archivo, que vive en src/ */
-#InformacionMantenimiento h1:first-of-type::before,
+   archivo, que vive en src/.
+   en el detalle no va: ese sitio lo ocupa el testigo de estado */
 #ActualizarServicioMantenimiento>p:nth-of-type(1)::before {
   content: "";
-  display: block;
-  margin: 0 auto var(--space-1);
-  background-image: url("../imagenes/AldiaLogo.jpeg");
-  background-size: cover;
-  background-position: center;
-  border-radius: var(--radius-pill);
-}
-
-/* en el detalle preside la banda gris */
-#InformacionMantenimiento h1:first-of-type::before {
-  width: 48px;
-  height: 48px;
-}
-
-/* en el formulario va en linea junto al titulo: apilado partiria la
-   barra en dos alturas y descuadraria Cancelar y Guardar */
-#ActualizarServicioMantenimiento>p:nth-of-type(1)::before {
   display: inline-block;
   vertical-align: text-bottom;
   width: 20px;
   height: 20px;
   margin: 0 6px 0 0;
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-pill);
 }
