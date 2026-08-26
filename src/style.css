@@ -599,6 +599,37 @@ p {
   align-items: stretch;
 }
 
+/* --- header (volver y logo) --- */
+.km-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  position: relative;
+}
+
+.km-volver {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.km-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.15);
+}
+
 /* --- titulo y subtitulo --- */
 #ActualizarKilometraje > h1 {
   font-size: 1.55rem;
