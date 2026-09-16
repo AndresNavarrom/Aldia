@@ -19,15 +19,28 @@
   --radius-lg: 24px;
   --radius-pill: 999px;
 
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 32px;
+  /* factor de ajuste fino: lo recalcula el JS para cada vista hasta
+     que cabe entera en pantalla. 1 = tamano de diseno original */
+  --ajuste: 1;
+
+  /* el espaciado se encoge con el alto de la pantalla: cada vista debe
+     caber entera sin scroll, como en el wireframe. el maximo es el
+     valor de diseno original, el minimo evita que se aplaste */
+  --space-1: calc(clamp(4px, 0.8vh, 8px) * var(--ajuste));
+  --space-2: calc(clamp(8px, 1.6vh, 16px) * var(--ajuste));
+  --space-3: calc(clamp(11px, 2.1vh, 24px) * var(--ajuste));
+  --space-4: calc(clamp(13px, 2.6vh, 32px) * var(--ajuste));
 
   --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
 
   --max-width-phone: 420px;
+}
+
+/* toda la tipografia esta en rem: al encoger la raiz con el alto de
+   pantalla, el texto entero se ajusta y las vistas siguen cabiendo */
+html {
+  font-size: calc(clamp(12.5px, 1.9vh, 16px) * var(--ajuste));
 }
 
 * {
@@ -41,6 +54,9 @@ body {
   /*controlamos los margenes entre los objetos*/
   color: var(--color-text);
   background: var(--color-surface);
+  /* el token existia desde el principio pero nunca se aplico al body:
+     sin esto toda la app salia en la serif por defecto del navegador */
+  font-family: var(--font-base);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -51,89 +67,193 @@ p {
   /* controla los margenes entre los objetos */
 }
 
+/* ============================================================
+   Vista 1 - Registro del vehiculo
+   ============================================================ */
+
 #Home {
-  max-width: 420px;
-  /* nunca crecer mas de X cantidad*/
+  max-width: var(--max-width-phone);
+  /* nunca crecer mas de X cantidad */
   margin: 0 auto;
-  /*centrar el objeto*/
-  padding: var(--space-3) var(--space-2);
-  /*relleno del objeto el primer argumento es para arriba y abajo el segundo es para los lados*/
+  /* centrar la pantalla sobre el fondo gris del body */
+  background: var(--color-bg);
+  padding: 0 0 var(--space-2);
+  /* columna para repartir el sobrante y que no quede hueco al final */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  /*centrar el contenido horizontalmente*/
-  text-align: center;
-  /*centrar el contenido de texto*/
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
+.alta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3) var(--space-3);
+}
+
+.alta-header h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.alta-sub {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* la rejilla de dos columnas solo la usan modelo y placa */
+.alta-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-2);
+  padding: 0 var(--space-3);
+  /* ocupa el alto restante y reparte el sobrante entre las filas, en
+     vez de amontonarlo en un hueco blanco al final */
+  flex: 1;
+  align-content: space-between;
+}
+
+.alta-campo {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+}
+
+.alta-campo-mitad {
+  grid-column: span 1;
+}
+
+.alta-campo label,
+.alta-rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-1);
+}
+
+.alta-campo input {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1.05rem;
+}
+
+/* --- pildoras de tipo de vehiculo --- */
 .botones-tipo-vehiculo {
   display: flex;
-  /*organiza los elementos en una linea horizontal*/
+  /* organiza los elementos en una linea horizontal */
   gap: var(--space-1);
-  /*espacio entre elementos*/
-  justify-content: center;
-  /*centrar el contenido horizontalmente*/
+  /* espacio entre elementos */
+  flex-wrap: wrap;
 }
 
 .botones-tipo-vehiculo button {
   padding: 10px 18px;
   border-radius: var(--radius-pill);
-  border: 1.5px solid var(--color-border);
+  border: 1.5px solid var(--color-text);
   background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
-#Home img {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: var(--radius-pill);
+/* el tipo elegido se invierte, no cambia de color */
+.botones-tipo-vehiculo .tipo-elegido {
+  background: var(--color-text);
+  color: var(--color-bg);
 }
 
-#Home h1:first-of-type {
-  margin-top: var(--space-1);
-  margin-bottom: 4px;
+/* --- kilometraje con la unidad dentro del campo --- */
+.alta-con-sufijo {
+  position: relative;
 }
 
-#Home p:first-of-type {
+.alta-con-sufijo input {
+  /* deja sitio a la unidad para que el texto no se le monte encima */
+  padding-right: 52px;
+}
+
+.alta-con-sufijo span {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+}
+
+/* --- plantilla de intervalos que trae la app --- */
+.alta-plantilla {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.alta-plantilla p {
+  margin: 0 0 var(--space-2);
+}
+
+.alta-plantilla ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.alta-plantilla li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-muted);
+  padding: 4px 0;
+}
+
+/* la vineta se dibuja aqui para poder alinearla con el texto */
+.alta-plantilla li span:first-child::before {
+  content: "•";
+  margin-right: var(--space-1);
+  color: var(--color-text);
+}
+
+.alta-nota {
+  grid-column: 1 / -1;
   color: var(--color-muted);
   margin: 0;
 }
 
-#Home h1:nth-of-type(2) {
-  margin-top: var(--space-3);
-}
-
-#Home label {
-  display: block;
-  width: 100%;
-  text-align: left;
-  font-size: 0.85rem;
-  color: var(--color-muted);
-  margin-top: var(--space-2);
-  margin-bottom: 4px;
-}
-
-#Home input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--color-border);
-  font-size: 1rem;
-  font-family: inherit;
-}
-
-#Home>button:last-of-type {
-  width: 100%;
-  margin-top: var(--space-3);
-  padding: 14px;
+.btn-crear {
+  grid-column: 1 / -1;
+  padding: var(--space-3);
   border: none;
   border-radius: var(--radius-md);
   background: var(--color-text);
   color: var(--color-bg);
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
+}
+
+/* el borde punteado marca lo que ocurre por debajo, no en pantalla */
+.alta-aviso {
+  grid-column: 1 / -1;
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
 }
 
 /* ============================================================
@@ -143,10 +263,11 @@ p {
 #Tablero {
   max-width: var(--max-width-phone);
   margin: 0 auto;
-  padding: 0 0 calc(var(--space-4) + 60px) 0; /* padding for bottom nav */
+  padding: 0 0 calc(var(--space-2) + 56px) 0; /* hueco de la barra de pestanas */
   background: var(--color-bg);
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* --- header --- */
@@ -190,8 +311,8 @@ p {
 
 .tablero-grafico-km {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: calc(clamp(80px, 14vh, 120px) * var(--ajuste));
+  height: calc(clamp(80px, 14vh, 120px) * var(--ajuste));
   flex-shrink: 0;
 }
 
@@ -267,7 +388,7 @@ p {
   background: var(--color-line);
   border-radius: var(--radius-pill);
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-2);
 }
 
 .barra-progreso-relleno {
@@ -447,6 +568,8 @@ p {
   /* cada bloque pone su propio margen lateral: la banda gris de la
      cabecera y la linea del pie tienen que llegar a los dos bordes */
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* --- cabecera gris: volver, testigo de estado, servicio e intervalo --- */
@@ -492,8 +615,8 @@ p {
    el wireframe codifica el estado por forma y no por color */
 .mant-testigo {
   display: block;
-  width: 64px;
-  height: 64px;
+  width: calc(clamp(44px, 7.5vh, 64px) * var(--ajuste));
+  height: calc(clamp(44px, 7.5vh, 64px) * var(--ajuste));
   margin: var(--space-3) auto var(--space-2);
   border: 2px solid var(--color-text);
   border-radius: var(--radius-pill);
@@ -594,8 +717,8 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 84px;
-  height: 84px;
+  width: calc(clamp(60px, 10vh, 84px) * var(--ajuste));
+  height: calc(clamp(60px, 10vh, 84px) * var(--ajuste));
   border: 1.5px solid var(--color-line);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
@@ -639,6 +762,9 @@ p {
   display: flex;
   border-top: 1.5px solid var(--color-line);
   padding: var(--space-3) var(--space-2);
+  /* el boton cierra la pantalla: sin esto el pie flota a media altura
+     y deja un blanco debajo */
+  margin-top: auto;
 }
 
 .mant-registrar {
@@ -662,6 +788,8 @@ p {
   /* la barra superior y los campos ponen su propio relleno: la linea
      bajo la barra tiene que llegar a los dos bordes */
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* --- barra superior: Cancelar | Nuevo registro | Guardar --- */
@@ -721,6 +849,10 @@ p {
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3) var(--space-2);
   padding: var(--space-3) var(--space-2);
+  /* ocupa el alto restante y reparte el sobrante entre las filas, en
+     vez de amontonarlo en un hueco blanco al final */
+  flex: 1;
+  align-content: space-between;
 }
 
 .reg-campo {
@@ -770,8 +902,8 @@ p {
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
-  width: 104px;
-  height: 104px;
+  width: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
+  height: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
   border: 1.5px solid var(--color-line);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -790,8 +922,8 @@ p {
 
 /* el borde punteado marca lo que aun no esta puesto */
 .reg-agregar {
-  width: 104px;
-  height: 104px;
+  width: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
+  height: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
   border: 1.5px dashed var(--color-line-strong);
   border-radius: var(--radius-md);
   background: none;
@@ -820,7 +952,9 @@ p {
 #ActualizarKilometraje {
   max-width: var(--max-width-phone);
   margin: 0 auto;
-  padding: var(--space-3) var(--space-2) var(--space-4);
+  /* respiro inferior igual al de las demas vistas: el boton cierra la
+     pantalla y no debe quedar un blanco notorio debajo */
+  padding: var(--space-3) var(--space-2) var(--space-2);
   background: var(--color-bg);
   display: flex;
   flex-direction: column;
@@ -910,12 +1044,14 @@ p {
 .km-numpad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: clamp(5px, 1vh, 10px);
   margin-bottom: var(--space-3);
 }
 
 .km-numpad button {
-  aspect-ratio: 1.6;
+  /* alto atado al viewport y no al ancho: con aspect-ratio el teclado
+     no encogia en pantallas bajas y sacaba la vista de cuadro */
+  height: calc(clamp(38px, 7vh, 62px) * var(--ajuste));
   border: 1.5px solid var(--color-line);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
@@ -980,7 +1116,7 @@ p {
 /* --- boton guardar --- */
 .km-guardar {
   width: 100%;
-  padding: 14px;
+  padding: var(--space-2);
   border: none;
   border-radius: var(--radius-md);
   background: var(--color-text);
@@ -990,8 +1126,444 @@ p {
   font-family: inherit;
   cursor: pointer;
   transition: opacity 0.15s ease;
+  /* empuja el boton al fondo: sin esto queda un blanco debajo */
+  margin-top: auto;
 }
 
 .km-guardar:active {
   opacity: 0.85;
+}
+
+/* ============================================================
+   Vistas 6, 7 y 8 - base comun de bitacora, gastos y documentos
+   ============================================================ */
+
+#Bitacora,
+#Gastos,
+#Documentos {
+  max-width: var(--max-width-phone);
+  margin: 0 auto;
+  /* el relleno inferior deja sitio a la barra de pestanas */
+  padding: 0 0 calc(var(--space-2) + 56px);
+  background: var(--color-bg);
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* --- cabecera comun: titulo, subtitulo y marca --- */
+.vista-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3) var(--space-2);
+}
+
+.vista-header h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.vista-sub {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* logo de la app, en escala de grises: el wireframe es monocromo a
+   proposito y el ambar de la marca rompia la paleta */
+.logo-app {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* --- pildoras de filtro, compartidas por bitacora y gastos --- */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.filtro {
+  padding: 10px 18px;
+  border: 1.5px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* el filtro aplicado se invierte, no cambia de color */
+.filtro.active {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* ============================================================
+   Vista 6 - Bitacora
+   ============================================================ */
+
+.anio-titulo {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  margin: 0 var(--space-3) var(--space-1);
+}
+
+.linea-tiempo {
+  list-style: none;
+  margin: 0 0 var(--space-2);
+  padding: 0 var(--space-3);
+}
+
+.linea-tiempo li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+/* el hilo vertical que une los registros: lo dibuja cada fila desde
+   su propio icono hacia abajo, asi no sobra por arriba ni por abajo */
+.linea-tiempo li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* centrado exacto bajo el icono de 24px: su centro cae en 12px y el
+     margen negativo descuenta el medio grosor del trazo */
+  left: 12px;
+  margin-left: -0.75px;
+  border-left: 1.5px solid var(--color-line);
+}
+
+.linea-tiempo .mant-icono {
+  position: relative;
+  z-index: 1;
+  margin-top: 2px;
+  /* tapa el hilo para que el icono se lea limpio */
+  background-color: var(--color-bg);
+}
+
+/* el medio lleno vuelve a pintar su mitad sobre el fondo opaco */
+.linea-tiempo .icon-pronto {
+  background-image: linear-gradient(90deg, var(--color-text) 50%, transparent 50%);
+}
+
+.linea-tiempo .icon-vencido {
+  background-color: var(--color-text);
+}
+
+.registro-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.registro-info h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.registro-info p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.registro-costo {
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Vista 7 - Gastos
+   ============================================================ */
+
+/* tarjeta oscura del acumulado del anio */
+.gastos-total {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  margin: 0 var(--space-3) var(--space-3);
+  padding: var(--space-3);
+}
+
+.gastos-total-rotulo {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-line);
+  margin-bottom: var(--space-1);
+}
+
+.gastos-total-cifra {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.gastos-total-cifra strong {
+  font-size: 2.4rem;
+  line-height: 1.1;
+}
+
+.gastos-total-cifra span {
+  color: var(--color-line);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gastos-categorias {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0 var(--space-3);
+}
+
+.gastos-categorias li {
+  margin-bottom: var(--space-3);
+}
+
+.categoria-linea {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.categoria-linea span {
+  font-size: 1.05rem;
+}
+
+.categoria-linea strong {
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+/* las categorias de menor peso van en un gris mas claro */
+.barra-progreso-relleno.tenue {
+  background: var(--color-muted);
+}
+
+/* --- grafico de barras por mes --- */
+.grafico-meses {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: end;
+  gap: var(--space-1);
+  height: calc(clamp(90px, 17vh, 150px) * var(--ajuste));
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.mes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 6px;
+}
+
+.mes-barra {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--color-line);
+}
+
+/* el mes en curso se destaca en oscuro */
+.mes-barra.activo {
+  background: var(--color-text);
+}
+
+.mes-letra {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.gastos-promedio {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 0 var(--space-3);
+  padding: var(--space-3);
+  font-weight: 700;
+}
+
+/* ============================================================
+   Vista 8 - Documentos
+   ============================================================ */
+
+.lista-documentos {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: 0 var(--space-3);
+}
+
+.documento {
+  display: flex;
+  flex-direction: column;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  /* son cuatro tarjetas: cada milimetro de relleno se multiplica por
+     cuatro y es lo que sacaba la vista fuera de pantalla */
+  padding: var(--space-2);
+}
+
+.documento-cabecera {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.documento-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.documento-info h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.documento-info p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* el vencido llena la barra entera y en el tono fuerte */
+.barra-progreso-relleno.lleno {
+  background: var(--color-text);
+}
+
+/* la etiqueta de estado cuelga a la derecha, bajo la barra */
+.documento .badge {
+  align-self: flex-end;
+  margin-top: var(--space-1);
+}
+
+/* aviso del recordatorio: mismo bloque pero sin borde y sobre gris */
+.recordatorio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 0 var(--space-3);
+  padding: var(--space-2);
+}
+
+/* la marca acompana al indicador de conexion en la esquina del tablero */
+.tablero-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ============================================================
+   Navegacion - una sola vista visible a la vez
+   ============================================================ */
+
+/* las secciones dejan de apilarse: la app muestra una pantalla y el
+   JS decide cual. los separadores solo servian para el catalogo.
+
+   se oculta la NO activa en vez de mostrar la activa: cada seccion
+   declara su propio display con un selector de id, que gana en
+   especificidad, asi que la regla activa no llegaria a aplicarse.
+   el !important es para ganarle a esos mismos ids al ocultar */
+body>section:not(.vista-activa) {
+  display: none !important;
+}
+
+/* toda vista llega hasta abajo del todo: sin esto el gris del body
+   asoma bajo el contenido cuando la pantalla es mas alta que la vista.
+   dvh descuenta la barra del navegador movil; vh queda de respaldo */
+body>section {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.separador-seccion {
+  display: none;
+}
+
+/* --- tipo de vehiculo elegido en el registro --- */
+.tipo-elegido {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* --- testigo de estado del detalle, segun el servicio abierto --- */
+.mant-testigo.estado-aldia {
+  background: transparent;
+}
+
+.mant-testigo.estado-pronto {
+  background: linear-gradient(90deg, var(--color-bg) 50%, var(--color-text) 50%);
+}
+
+.mant-testigo.estado-vencido {
+  background: var(--color-text);
+}
+
+/* --- aviso de validacion ---
+   flotante sobre la vista, para no descolocar el contenido */
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-4) + 70px);
+  z-index: 10;
+  transform: translate(-50%, 12px);
+  max-width: calc(var(--max-width-phone) - var(--space-4));
+  margin: 0;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.aviso.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* --- salida del tablero hacia la pantalla de registro (vista 1) --- */
+.btn-registro {
+  border: 1.5px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
 }
