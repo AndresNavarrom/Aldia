@@ -13,115 +13,281 @@
   <script type="module" src="/src/main.js"></script>
 
   <section id="Home">
-    <br>
-    <img src="imagenes/AldiaLogo.jpeg" alt="Aldia Logo">
 
-    <br>
-    <h1>Aldia</h1>
-    <p>No necesitas Internet</p>
+    <header class="alta-header">
+      <div>
+        <h1>Registre su vehículo</h1>
+        <p class="alta-sub">Al abrir la app por primera vez. Sin correo, sin contraseña, sin cuenta.</p>
+      </div>
+      <span class="logo-app" aria-hidden="true"></span>
+    </header>
 
-    <br>
-    <h1>Registre su vehículo</h1>
+    <div class="alta-campos">
 
-    <br>
-    <div class="botones-tipo-vehiculo">
-      <button>Carro</button>
-      <button>Moto</button>
-      <button>Camion</button>
+      <div class="alta-campo">
+        <span class="alta-rotulo">Tipo de vehículo</span>
+        <div class="botones-tipo-vehiculo">
+          <button class="tipo-elegido">Carro</button>
+          <button>Moto</button>
+          <button>Camioneta</button>
+        </div>
+      </div>
+
+      <div class="alta-campo">
+        <label for="MarcaLinea">Marca y línea</label>
+        <input type="text" id="MarcaLinea" placeholder="Ej. Mazda 3">
+      </div>
+
+      <div class="alta-campo alta-campo-mitad">
+        <label for="Modelo">Modelo</label>
+        <input type="text" id="Modelo" placeholder="2016">
+      </div>
+
+      <div class="alta-campo alta-campo-mitad">
+        <label for="Placa">Placa</label>
+        <input type="text" id="Placa" placeholder="ABC 123">
+      </div>
+
+      <div class="alta-campo">
+        <label for="Kilometraje">Kilometraje actual</label>
+        <div class="alta-con-sufijo">
+          <input type="text" id="Kilometraje" placeholder="84.350">
+          <span>km</span>
+        </div>
+      </div>
+
+      <div class="alta-campo">
+        <span class="alta-rotulo">Plantilla de mantenimientos</span>
+        <div class="alta-plantilla">
+          <p>Se precargan los intervalos estándar:</p>
+          <ul>
+            <li><span>Cambio de aceite</span><span>5.000 km</span></li>
+            <li><span>Filtro de aire</span><span>10.000 km</span></li>
+            <li><span>Rotación de llantas</span><span>10.000 km</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="alta-nota">Todos los intervalos se pueden editar después.</p>
+
+      <button class="btn-crear">Crear bitácora</button>
+
+      <p class="alta-aviso">Se escribe en localStorage: vehículo + plantilla de intervalos</p>
+
     </div>
-
-    <br>
-    <label for="Marca y modelo">Marca y modelo</label>
-    <input type="text" id="Marca y modelo">
-
-    <label for="Anio">Anio</label>
-    <input type="number" id="Anio">
-
-    <label for="Placa">Placa</label>
-    <input type="text" id="Placa">
-
-    <label for="Kilometraje">Kilometraje</label>
-    <input type="text" id="Kilometraje">
-
-    <br>
-    <button>Registrar</button>
 
   </section>
 
   <hr class="separador-seccion">
 
   <section id="Tablero">
-    <h1>[MARCA Y MODELO] [anio]</h1>
-
-    <h1>[PLACA]</h1>
-    <br>
+    <header class="tablero-header">
+      <div>
+        <h1>Mazda 3 &middot; 2016</h1>
+        <p class="tablero-placa">ABC 123</p>
+      </div>
+      <div class="tablero-marca">
+        <button class="btn-registro">Cambiar vehículo</button>
+        <span class="logo-app" aria-hidden="true"></span>
+      </div>
+    </header>
 
     <div class="tablero-resumen">
-
-      <p class="tablero-km">84500 km</p>
-      <div class="tablero-proximo">
-        <h2 class="tablero-servicio">Proximo servicio</h2>
-        <p class="tablero-servicio">Cambio de aceite</p>
-        <div class="barra-progreso">
-          <div class="barra-progreso-relleno" style="width: 70%"></div>
+      <div class="tablero-grafico-km">
+        <!-- SVG for circular progress -->
+        <svg viewBox="0 0 36 36" class="circular-chart">
+          <path class="circle-bg"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path class="circle"
+            stroke-dasharray="70, 100"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <div class="grafico-texto">
+          <strong>84.350</strong>
+          <span>km</span>
         </div>
-        <button class="tablero-actualizar">Actualizar</button>
+      </div>
+      <div class="tablero-proximo">
+        <span class="proximo-label">PRÓXIMO SERVICIO</span>
+        <h2 class="proximo-titulo">Cambio de aceite</h2>
+        <p class="proximo-desc">Faltan 650 km</p>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 75%"></div>
+        </div>
+        <button class="btn-actualizar">Actualizar km</button>
       </div>
     </div>
 
-    <h1>Estado de mantenimiento</h1>
-    <br>
+    <h2 class="seccion-titulo">ESTADO DE MANTENIMIENTOS</h2>
+    <div class="lista-mantenimientos">
+      <div class="item-mant" data-servicio="aceite" role="button" tabindex="0">
+        <div class="mant-icono icon-pronto"></div>
+        <div class="mant-info">
+          <h3>Cambio de aceite</h3>
+          <p>Faltan 650 km de 5.000</p>
+        </div>
+        <span class="badge badge-pronto">Pronto</span>
+      </div>
+      <div class="item-mant" data-servicio="pastillas" role="button" tabindex="0">
+        <div class="mant-icono icon-vencido"></div>
+        <div class="mant-info">
+          <h3>Pastillas de freno</h3>
+          <p>Vencido hace 1.200 km</p>
+        </div>
+        <span class="badge badge-vencido">Vencido</span>
+      </div>
+      <div class="item-mant" data-servicio="filtro" role="button" tabindex="0">
+        <div class="mant-icono icon-aldia"></div>
+        <div class="mant-info">
+          <h3>Filtro de aire</h3>
+          <p>Faltan 4.300 km</p>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </div>
+      <div class="item-mant" data-servicio="llantas" role="button" tabindex="0">
+        <div class="mant-icono icon-aldia"></div>
+        <div class="mant-info">
+          <h3>Rotación de llantas</h3>
+          <p>Faltan 5.650 km</p>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </div>
+      <div class="item-mant" data-servicio="liquido" role="button" tabindex="0">
+        <div class="mant-icono icon-aldia"></div>
+        <div class="mant-info">
+          <h3>Líquido de frenos</h3>
+          <p>Faltan 12.000 km</p>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </div>
+    </div>
 
-    <button>Tablero</button>
-    <button>Bitacora</button>
-    <button>Gastos</button>
-    <button>Documentos</button>
+    <nav class="bottom-nav">
+      <button class="nav-item active">
+        <div class="nav-icon"></div>
+        <span>Tablero</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Bitácora</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Gastos</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Documentos</span>
+      </button>
+    </nav>
   </section>
 
   <hr class="separador-seccion">
 
   <section id="ActualizarKilometraje">
-    <h1>Actualizar Kilometraje</h1>
-    <p>[KILOMETRAJE ACTUAL] km</p>
-    <h2>Actualizado hace [TIEMPO]</h2>
-    <br>
+    <header class="km-header">
+      <button class="km-volver" aria-label="Volver">&lsaquo;</button>
+      <img class="km-logo" src="imagenes/AldiaLogo.jpeg" alt="Aldia Logo">
+    </header>
 
-    <button>1</button>
-    <button>2</button>
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
-    <button>8</button>
-    <button>9</button>
-    <button>0</button>
-    <button>[ borrar ]</button>
-    <button>[ Guardar ]</button>
+    <h1>Actualizar kilometraje</h1>
+    <p class="km-subtitle">Es el único dato que hay que mantener al día.</p>
+
+    <div class="km-display-card">
+      <span class="km-label">KILOMETRAJE ACTUAL</span>
+      <span class="km-value">84.350</span>
+      <span class="km-last-update">última actualización hace 12 días</span>
+    </div>
+
+    <div class="km-numpad">
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="km-empty"></button>
+      <button>0</button>
+      <button class="km-backspace">⌫</button>
+    </div>
+
+    <div class="km-foto-odometro">
+      <strong>Tomar foto del odómetro</strong>
+      <span>Lectura en el dispositivo · función no implementada</span>
+    </div>
+
+    <p class="km-promedio">Promedio: 71 km/día. Sin confirmar muestra &lt;= estimado&gt;</p>
+
+    <button class="km-guardar">Guardar</button>
   </section>
 
   <hr class="separador-seccion">
 
   <section id="InformacionMantenimiento">
 
-    <h1>[Mantenimiento]</h1>
-    <p>Cada [intervalo] [unidad de intervalo]</p>
-    <br>
+    <header class="mant-cabecera">
+      <button class="mant-volver" aria-label="Volver al tablero">&lsaquo;</button>
+      <span class="mant-testigo" aria-hidden="true"></span>
+      <h1>Cambio de aceite</h1>
+      <p>Cada 5.000 km o 6 meses</p>
+    </header>
 
-    <h2>Faltan [intervalo] [unidad de intervalo]</h2>
-    <p>Se hace a los [intervalo] [unidad de intervalo]</p>
-    <br>
+    <div class="mant-cifras">
+      <div class="mant-cifra">
+        <span class="mant-cifra-rotulo">Faltan</span>
+        <strong class="mant-cifra-valor">650 km</strong>
+      </div>
+      <div class="mant-cifra">
+        <span class="mant-cifra-rotulo">Se hace a los</span>
+        <strong class="mant-cifra-valor">85.000 km</strong>
+      </div>
+    </div>
 
-    <h2>Último registro</h2>
-    <p>[FECHA REGISTRO] [COSTO]</p>
-    <br>
+    <h2 class="mant-rotulo">Último registro</h2>
 
-    <h2>Historico</h2>
-    <p>[FECHA REGISTRO] [COSTO]</p>
-    <br>
+    <div class="mant-registro">
+      <p class="mant-registro-titular">
+        <strong>14 de marzo de 2026</strong>
+        <strong>$185.000</strong>
+      </p>
+      <div class="mant-registro-cuerpo">
+        <div class="mant-registro-datos">
+          <p>80.010 km · Taller El Poblado</p>
+          <p>Aceite sintético 5W-30 + filtro</p>
+        </div>
+        <span class="mant-factura">factura</span>
+      </div>
+    </div>
 
-    <h2>Registrar este servicio</h2>
+    <h2 class="mant-rotulo">Registros anteriores</h2>
 
+    <ul class="mant-historico">
+      <li>
+        <strong>28 sep 2025</strong>
+        <span class="mant-historico-km">75.120 km</span>
+        <span class="mant-historico-costo">$172.000</span>
+      </li>
+      <li>
+        <strong>11 abr 2025</strong>
+        <span class="mant-historico-km">70.050 km</span>
+        <span class="mant-historico-costo">$168.000</span>
+      </li>
+    </ul>
+
+    <p class="mant-nota">Intervalo editable en ajustes del servicio.</p>
+
+    <div class="mant-pie">
+      <button class="mant-registrar">Registrar este servicio</button>
+    </div>
 
   </section>
 
@@ -129,121 +295,345 @@
 
   <section id="ActualizarServicioMantenimiento">
 
-    <button>Cancelar</button>
-    <p>Nuevo regitro</p>
-    <button>[Guardar]</button>
-    <br>
+    <header class="reg-barra">
+      <button class="reg-cancelar">Cancelar</button>
+      <p class="reg-titulo">Nuevo registro</p>
+      <button class="reg-guardar">Guardar</button>
+    </header>
 
-    <h2>Tipo de registro</h2>
-    <p>[TIPO DE REGISTRO]</p>
-    <br>
+    <div class="reg-campos">
 
-    <label for="FechaActual">Fecha actual</label>
-    <input type="date" id="FechaActual">
+      <div class="reg-campo">
+        <label for="TipoServicio">Tipo de servicio</label>
+        <input type="text" id="TipoServicio" value="Cambio de aceite">
+      </div>
 
-    <label for="KilometrajeActual">Kilometraje Actual</label>
-    <input type="number" id="KilometrajeActual">
-    <br>
+      <div class="reg-campo reg-campo-mitad">
+        <label for="FechaActual">Fecha</label>
+        <input type="text" id="FechaActual" value="5 ago 2026">
+      </div>
 
-    <h2>Taller</h2>
-    <label for="Taller">Taller</label>
-    <input type="text" id="Taller">
-    <br>
+      <div class="reg-campo reg-campo-mitad">
+        <label for="KilometrajeActual">Kilometraje</label>
+        <input type="text" id="KilometrajeActual" value="84.350">
+      </div>
 
-    <Label for="Costo">Costo</Label>
-    <input type="number" id="Costo">
-    <br>
+      <div class="reg-campo">
+        <label for="Taller">Taller o lugar</label>
+        <input type="text" id="Taller" value="Taller El Poblado">
+      </div>
 
-    <h2>Notas</h2>
-    <label for="Notas">Nota</label>
-    <input type="text" id="Notas">
-    <br>
+      <div class="reg-campo">
+        <label for="Costo">Costo</label>
+        <input type="text" id="Costo" value="$ 195.000">
+      </div>
 
-    <h2>Foto de factura</h2>
-    <button>Subir foto</button>
-    <p>[Estado de la operacion]</p>
+      <div class="reg-campo">
+        <label for="Notas">Notas</label>
+        <textarea id="Notas" rows="3">Aceite sintético 5W-30, filtro nuevo.
+Revisar fuga leve en el próximo.</textarea>
+      </div>
+
+      <div class="reg-campo">
+        <span class="reg-rotulo">Foto de la factura</span>
+        <div class="reg-fotos">
+          <span class="reg-miniatura">factura</span>
+          <button class="reg-agregar" aria-label="Agregar foto">+</button>
+        </div>
+      </div>
+
+      <p class="reg-aviso">Al guardar se escribe el registro en localStorage</p>
+
+    </div>
 
   </section>
 
   <section id="Bitacora">
-    <h1>Bitácora</h1>
-    <p>[cantidad de registros] registros desde [Fecha de registro]</p>
-    <br>
 
-    <button>Todo</button>
-    <button>Aceita</button>
-    <button>Frenos</button>
-    <button>LLantes</button>
+    <header class="vista-header">
+      <div>
+        <h1>Bitácora</h1>
+        <p class="vista-sub">32 registros desde 2019</p>
+      </div>
+      <span class="logo-app" aria-hidden="true"></span>
+    </header>
 
-    <br>
-    <H2>Anio</H2>
-    <p>[FECHA REGISTRO] [REGISTRO] [COSTO]</p>
+    <div class="filtros">
+      <button class="filtro active">Todo</button>
+      <button class="filtro">Aceite</button>
+      <button class="filtro">Frenos</button>
+      <button class="filtro">Llantas</button>
+    </div>
 
-    <br>
-    <button>Tablero</button>
-    <button>Bitacora</button>
-    <button>Gastos</button>
-    <button>Documentos</button>
+    <h2 class="anio-titulo">2026</h2>
+    <ul class="linea-tiempo">
+      <li>
+        <span class="mant-icono icon-pronto"></span>
+        <div class="registro-info">
+          <h3>Cambio de aceite</h3>
+          <p>5 ago &middot; 84.350 km</p>
+        </div>
+        <span class="registro-costo">$195.000</span>
+      </li>
+      <li>
+        <span class="mant-icono icon-vencido"></span>
+        <div class="registro-info">
+          <h3>Pastillas delanteras</h3>
+          <p>2 jun &middot; 82.100 km</p>
+        </div>
+        <span class="registro-costo">$240.000</span>
+      </li>
+      <li>
+        <span class="mant-icono icon-pronto"></span>
+        <div class="registro-info">
+          <h3>Cambio de aceite</h3>
+          <p>14 mar &middot; 80.010 km</p>
+        </div>
+        <span class="registro-costo">$185.000</span>
+      </li>
+    </ul>
+
+    <h2 class="anio-titulo">2025</h2>
+    <ul class="linea-tiempo">
+      <li>
+        <span class="mant-icono icon-aldia"></span>
+        <div class="registro-info">
+          <h3>Rotación de llantas</h3>
+          <p>20 dic &middot; 78.400 km</p>
+        </div>
+        <span class="registro-costo">$60.000</span>
+      </li>
+      <li>
+        <span class="mant-icono icon-pronto"></span>
+        <div class="registro-info">
+          <h3>Cambio de aceite</h3>
+          <p>28 sep &middot; 75.120 km</p>
+        </div>
+        <span class="registro-costo">$172.000</span>
+      </li>
+      <li>
+        <span class="mant-icono icon-aldia"></span>
+        <div class="registro-info">
+          <h3>Filtro de aire</h3>
+          <p>3 jul &middot; 72.900 km</p>
+        </div>
+        <span class="registro-costo">$85.000</span>
+      </li>
+    </ul>
+
+    <nav class="bottom-nav">
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Tablero</span>
+      </button>
+      <button class="nav-item active">
+        <div class="nav-icon"></div>
+        <span>Bitácora</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Gastos</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Documentos</span>
+      </button>
+    </nav>
 
   </section>
 
   <hr class="separador-seccion">
 
   <section id="Gastos">
-    <h1>Gastos</h1>
-    <button>[anio 1]</button>
-    <button>[anio 2]</button>
-    <button>[anio 3]</button>
-    <br>
 
-    <h2>Gastado en [anio seleccionado]</h2>
-    <p>[Cantidad total gastos]</p>
-    <br>
+    <header class="vista-header">
+      <h1>Gastos</h1>
+      <span class="logo-app" aria-hidden="true"></span>
+    </header>
 
-    <h2>Por categoria</h2>
-    <button>Mantenimiento</button>
-    <button>Documentos</button>
-    <button>Otros</button>
-    <br>
+    <div class="filtros">
+      <button class="filtro active">2026</button>
+      <button class="filtro">2025</button>
+      <button class="filtro">Todo</button>
+    </div>
 
-    <h2>Por mes</h2>
-    <p>[MES] [CANTIDAD]</p>\
+    <div class="gastos-total">
+      <span class="gastos-total-rotulo">Gastado en 2026</span>
+      <div class="gastos-total-cifra">
+        <strong>$1.246.000</strong>
+        <span>$ 89 / km</span>
+      </div>
+    </div>
 
-    <br>
-    <button>Tablero</button>
-    <button>Bitacora</button>
-    <button>Gastos</button>
-    <button>Documentos</button>
+    <h2 class="seccion-titulo">Por categoría</h2>
+    <ul class="gastos-categorias">
+      <li>
+        <div class="categoria-linea">
+          <span>Mantenimiento preventivo</span>
+          <strong>$520.000</strong>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 42%"></div>
+        </div>
+      </li>
+      <li>
+        <div class="categoria-linea">
+          <span>Frenos y suspensión</span>
+          <strong>$340.000</strong>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 27%"></div>
+        </div>
+      </li>
+      <li>
+        <div class="categoria-linea">
+          <span>Llantas</span>
+          <strong>$216.000</strong>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno tenue" style="width: 17%"></div>
+        </div>
+      </li>
+      <li>
+        <div class="categoria-linea">
+          <span>Documentos y seguros</span>
+          <strong>$170.000</strong>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno tenue" style="width: 14%"></div>
+        </div>
+      </li>
+    </ul>
+
+    <h2 class="seccion-titulo">Por mes</h2>
+    <div class="grafico-meses">
+      <div class="mes"><span class="mes-barra" style="height: 26%"></span><span class="mes-letra">E</span></div>
+      <div class="mes"><span class="mes-barra" style="height: 55%"></span><span class="mes-letra">F</span></div>
+      <div class="mes"><span class="mes-barra" style="height: 16%"></span><span class="mes-letra">M</span></div>
+      <div class="mes"><span class="mes-barra" style="height: 100%"></span><span class="mes-letra">A</span></div>
+      <div class="mes"><span class="mes-barra" style="height: 38%"></span><span class="mes-letra">M</span></div>
+      <div class="mes"><span class="mes-barra" style="height: 72%"></span><span class="mes-letra">J</span></div>
+      <div class="mes"><span class="mes-barra" style="height: 20%"></span><span class="mes-letra">J</span></div>
+      <div class="mes"><span class="mes-barra activo" style="height: 62%"></span><span class="mes-letra">A</span></div>
+    </div>
+
+    <p class="gastos-promedio">Promedio mensual: $155.750</p>
+
+    <nav class="bottom-nav">
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Tablero</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Bitácora</span>
+      </button>
+      <button class="nav-item active">
+        <div class="nav-icon"></div>
+        <span>Gastos</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Documentos</span>
+      </button>
+    </nav>
+
   </section>
 
   <hr class="separador-seccion">
 
   <section id="Documentos">
-    <h1>Documentos</h1>
-    <p>No te precoupes...</p>
-    <br>
 
-    <h2>[Documento]</h2>
-    <p>[Estado de documento]</p>
-    <p>Faltan [Dias para vencer]</p>
-    <br>
+    <header class="vista-header">
+      <div>
+        <h1>Documentos</h1>
+        <p class="vista-sub">Alertas por fecha, calculadas en el teléfono</p>
+      </div>
+      <span class="logo-app" aria-hidden="true"></span>
+    </header>
 
-    <h2>[Documento]</h2>
-    <p>[Estado de documento]</p>
-    <p>Faltan [Dias para vencer]</p>
-    <br>
-    <h2>[Documento]</h2>
-    <p>[Estado de documento]</p>
-    <p>Faltan [Dias para vencer]</p>
-    <br>
+    <ul class="lista-documentos">
+      <li class="documento">
+        <div class="documento-cabecera">
+          <span class="mant-icono icon-pronto"></span>
+          <div class="documento-info">
+            <h3>SOAT</h3>
+            <p>Vence el 12 de septiembre de 2026</p>
+          </div>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 85%"></div>
+        </div>
+        <span class="badge badge-pronto">Faltan 32 días</span>
+      </li>
+      <li class="documento">
+        <div class="documento-cabecera">
+          <span class="mant-icono icon-aldia"></span>
+          <div class="documento-info">
+            <h3>Revisión tecnomecánica</h3>
+            <p>Vence el 3 de marzo de 2027</p>
+          </div>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 32%"></div>
+        </div>
+        <span class="badge badge-aldia">Faltan 204 días</span>
+      </li>
+      <li class="documento">
+        <div class="documento-cabecera">
+          <span class="mant-icono icon-aldia"></span>
+          <div class="documento-info">
+            <h3>Impuesto vehicular</h3>
+            <p>Pagado el 20 de mayo de 2026</p>
+          </div>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno" style="width: 15%"></div>
+        </div>
+        <span class="badge badge-aldia">Al día</span>
+      </li>
+      <li class="documento">
+        <div class="documento-cabecera">
+          <span class="mant-icono icon-vencido"></span>
+          <div class="documento-info">
+            <h3>Seguro todo riesgo</h3>
+            <p>Venció el 1 de agosto de 2026</p>
+          </div>
+        </div>
+        <div class="barra-progreso">
+          <div class="barra-progreso-relleno lleno" style="width: 100%"></div>
+        </div>
+        <span class="badge badge-vencido">Vencido hace 10 días</span>
+      </li>
+    </ul>
 
-    <p>Te recordamos [Dias] antes</p>
-    <br>
+    <div class="recordatorio">
+      <span class="mant-icono icon-pronto"></span>
+      <div class="documento-info">
+        <h3>Recordatorio 15 días antes</h3>
+        <p>Notificación local, sin necesidad de datos</p>
+      </div>
+    </div>
 
-    <button>Tablero</button>
-    <button>Bitacora</button>
-    <button>Gastos</button>
-    <button>Documentos</button>
+    <nav class="bottom-nav">
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Tablero</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Bitácora</span>
+      </button>
+      <button class="nav-item">
+        <div class="nav-icon outline"></div>
+        <span>Gastos</span>
+      </button>
+      <button class="nav-item active">
+        <div class="nav-icon"></div>
+        <span>Documentos</span>
+      </button>
+    </nav>
+
   </section>
 
 </body>
