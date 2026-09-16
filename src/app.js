@@ -202,6 +202,29 @@ function soloDigitos(texto) {
   return parseInt(String(texto).replace(/\D/g, ''), 10) || 0;
 }
 
+/* pone el punto de miles mientras se escribe: 84350 -> 84.350.
+   al reescribir el valor el navegador manda el cursor al final, asi que
+   se cuenta cuantos digitos habia antes del cursor y se devuelve detras
+   de ese mismo digito; si no, corregir un numero a mitad es imposible */
+function formatearMientrasEscribe(campo) {
+  campo.addEventListener('input', function () {
+    const cursor = campo.selectionStart;
+    const digitosAntes = campo.value.slice(0, cursor).replace(/\D/g, '').length;
+
+    /* 7 digitos dan de sobra para el odometro de cualquier vehiculo */
+    const digitos = campo.value.replace(/\D/g, '').slice(0, 7);
+    campo.value = digitos ? formatearKm(parseInt(digitos, 10)) : '';
+
+    let vistos = 0;
+    let posicion = 0;
+    while (posicion < campo.value.length && vistos < digitosAntes) {
+      if (/\d/.test(campo.value[posicion])) vistos++;
+      posicion++;
+    }
+    campo.setSelectionRange(posicion, posicion);
+  });
+}
+
 /* ============================================================
    Vista 1 - Registro del vehiculo
    ============================================================ */
@@ -215,6 +238,8 @@ home.querySelectorAll('.botones-tipo-vehiculo button').forEach(function (b) {
     b.classList.add('tipo-elegido');
   });
 });
+
+formatearMientrasEscribe(home.querySelector('#Kilometraje'));
 
 home.querySelector('.btn-crear').addEventListener('click', function () {
   const marca = home.querySelector('#MarcaLinea').value.trim();
@@ -435,6 +460,8 @@ detalle.querySelector('.mant-registrar').addEventListener('click', function () {
    ============================================================ */
 
 const registro = document.querySelector('#ActualizarServicioMantenimiento');
+
+formatearMientrasEscribe(registro.querySelector('#KilometrajeActual'));
 
 function prepararRegistro(id) {
   const s = SERVICIOS[id];
