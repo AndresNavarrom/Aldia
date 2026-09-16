@@ -1,0 +1,1569 @@
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f2f3f5;
+  /* fondo detrás de las "pantallas" */
+  --color-text: #14151a;
+  --color-muted: #6b7280;
+  --color-border: #14151a;
+  --color-accent: #3a6ea5;
+  /* azul confiable, tipo tablero de auto */
+  --color-accent-dark: #234a70;
+
+  --color-line: #d4d7dc;
+  /* borde suave: contorno de las tarjetas del wireframe */
+  --color-line-strong: #a8adb5;
+  /* borde suave pero visible: campos de formulario */
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* factor de ajuste fino: lo recalcula el JS para cada vista hasta
+     que cabe entera en pantalla. 1 = tamano de diseno original */
+  --ajuste: 1;
+
+  /* el espaciado se encoge con el alto de la pantalla: cada vista debe
+     caber entera sin scroll, como en el wireframe. el maximo es el
+     valor de diseno original, el minimo evita que se aplaste */
+  --space-1: calc(clamp(4px, 0.8vh, 8px) * var(--ajuste));
+  --space-2: calc(clamp(8px, 1.6vh, 16px) * var(--ajuste));
+  --space-3: calc(clamp(11px, 2.1vh, 24px) * var(--ajuste));
+  --space-4: calc(clamp(13px, 2.6vh, 32px) * var(--ajuste));
+
+  --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+
+  --max-width-phone: 420px;
+}
+
+/* toda la tipografia esta en rem: al encoger la raiz con el alto de
+   pantalla, el texto entero se ajusta y las vistas siguen cabiendo */
+html {
+  font-size: calc(clamp(12.5px, 1.9vh, 16px) * var(--ajuste));
+}
+
+* {
+  box-sizing: border-box;
+  /*todos los elementos de la pasgina*/
+
+}
+
+body {
+  margin: 0;
+  /*controlamos los margenes entre los objetos*/
+  color: var(--color-text);
+  background: var(--color-surface);
+  /* el token existia desde el principio pero nunca se aplico al body:
+     sin esto toda la app salia en la serif por defecto del navegador */
+  font-family: var(--font-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p {
+  margin: 0 0 var(--space-1) 0;
+  /* controla los margenes entre los objetos */
+}
+
+/* ============================================================
+   Vista 1 - Registro del vehiculo
+   ============================================================ */
+
+#Home {
+  max-width: var(--max-width-phone);
+  /* nunca crecer mas de X cantidad */
+  margin: 0 auto;
+  /* centrar la pantalla sobre el fondo gris del body */
+  background: var(--color-bg);
+  padding: 0 0 var(--space-2);
+  /* columna para repartir el sobrante y que no quede hueco al final */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.alta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3) var(--space-3);
+}
+
+.alta-header h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.alta-sub {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* la rejilla de dos columnas solo la usan modelo y placa */
+.alta-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-2);
+  padding: 0 var(--space-3);
+  /* ocupa el alto restante y reparte el sobrante entre las filas, en
+     vez de amontonarlo en un hueco blanco al final */
+  flex: 1;
+  align-content: space-between;
+}
+
+.alta-campo {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+}
+
+.alta-campo-mitad {
+  grid-column: span 1;
+}
+
+.alta-campo label,
+.alta-rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-1);
+}
+
+.alta-campo input {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1.05rem;
+}
+
+/* --- pildoras de tipo de vehiculo --- */
+.botones-tipo-vehiculo {
+  display: flex;
+  /* organiza los elementos en una linea horizontal */
+  gap: var(--space-1);
+  /* espacio entre elementos */
+  flex-wrap: wrap;
+}
+
+.botones-tipo-vehiculo button {
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-text);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* el tipo elegido se invierte, no cambia de color */
+.botones-tipo-vehiculo .tipo-elegido {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* --- kilometraje con la unidad dentro del campo --- */
+.alta-con-sufijo {
+  position: relative;
+}
+
+.alta-con-sufijo input {
+  /* deja sitio a la unidad para que el texto no se le monte encima */
+  padding-right: 52px;
+}
+
+.alta-con-sufijo span {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+}
+
+/* --- plantilla de intervalos que trae la app --- */
+.alta-plantilla {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.alta-plantilla p {
+  margin: 0 0 var(--space-2);
+}
+
+.alta-plantilla ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.alta-plantilla li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-muted);
+  padding: 4px 0;
+}
+
+/* la vineta se dibuja aqui para poder alinearla con el texto */
+.alta-plantilla li span:first-child::before {
+  content: "•";
+  margin-right: var(--space-1);
+  color: var(--color-text);
+}
+
+.alta-nota {
+  grid-column: 1 / -1;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.btn-crear {
+  grid-column: 1 / -1;
+  padding: var(--space-3);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* el borde punteado marca lo que ocurre por debajo, no en pantalla */
+.alta-aviso {
+  grid-column: 1 / -1;
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   Vista – Tablero
+   ============================================================ */
+
+#Tablero {
+  max-width: var(--max-width-phone);
+  margin: 0 auto;
+  padding: 0 0 calc(var(--space-2) + 56px) 0; /* hueco de la barra de pestanas */
+  background: var(--color-bg);
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* --- header --- */
+.tablero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-4) var(--space-3) var(--space-2);
+}
+
+.tablero-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+}
+
+.tablero-placa {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.badge-conexion {
+  border: 1.5px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* --- main card --- */
+.tablero-resumen {
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: var(--space-2) var(--space-3) var(--space-4);
+  padding: var(--space-3);
+  gap: var(--space-3);
+}
+
+.tablero-grafico-km {
+  position: relative;
+  width: calc(clamp(80px, 14vh, 120px) * var(--ajuste));
+  height: calc(clamp(80px, 14vh, 120px) * var(--ajuste));
+  flex-shrink: 0;
+}
+
+.circular-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: 3.5;
+}
+
+.circle {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.grafico-texto {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.grafico-texto strong {
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.grafico-texto span {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.tablero-proximo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.proximo-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.proximo-titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 2px 0;
+}
+
+.proximo-desc {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.barra-progreso {
+  height: 6px;
+  background: var(--color-line);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.barra-progreso-relleno {
+  height: 100%;
+  background: var(--color-text);
+  border-radius: var(--radius-pill);
+}
+
+.btn-actualizar {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* --- mantenimientos section --- */
+.seccion-titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  margin: 0 var(--space-3) var(--space-2);
+}
+
+.lista-mantenimientos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+}
+
+.item-mant {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  gap: var(--space-2);
+}
+
+.mant-icono {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}
+
+.icon-pronto {
+  background: linear-gradient(90deg, var(--color-text) 50%, transparent 50%);
+}
+
+.icon-vencido {
+  background: var(--color-text);
+}
+
+.icon-aldia {
+  background: transparent;
+}
+
+.mant-info {
+  flex: 1;
+}
+
+.mant-info h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 2px 0;
+}
+
+.mant-info p {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.badge-pronto {
+  border: 1.5px solid var(--color-text);
+  color: var(--color-text);
+}
+
+.badge-vencido {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.badge-aldia {
+  border: 1.5px solid var(--color-line);
+  color: var(--color-muted);
+}
+
+/* --- bottom nav --- */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1.5px solid var(--color-line);
+  background: var(--color-bg);
+  padding: var(--space-2) 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  font-family: inherit;
+  color: var(--color-muted);
+  cursor: pointer;
+  gap: 4px;
+}
+
+.nav-item.active {
+  color: var(--color-text);
+}
+
+.nav-item span {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+}
+
+.nav-icon.outline {
+  background: transparent;
+  border: 2px solid var(--color-muted);
+}
+
+/* ============================================================
+   Vistas 4 y 5 - base comun de las pantallas de mantenimiento
+   ============================================================ */
+
+#InformacionMantenimiento,
+#ActualizarServicioMantenimiento {
+  max-width: var(--max-width-phone);
+  /* nunca crecer mas de X cantidad */
+  margin: 0 auto;
+  /* centrar la pantalla sobre el fondo gris del body */
+  padding: 0 var(--space-2) var(--space-3);
+  background: var(--color-bg);
+}
+
+/* los <br> del HTML se ignoran: el espaciado se controla con margenes */
+#InformacionMantenimiento br,
+#ActualizarServicioMantenimiento br {
+  display: none;
+}
+
+/* ============================================================
+   Vista 4 - Detalle del mantenimiento
+   ============================================================ */
+
+#InformacionMantenimiento {
+  /* cada bloque pone su propio margen lateral: la banda gris de la
+     cabecera y la linea del pie tienen que llegar a los dos bordes */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- cabecera gris: volver, testigo de estado, servicio e intervalo --- */
+.mant-cabecera {
+  position: relative;
+  background: var(--color-surface);
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  text-align: center;
+}
+
+.mant-volver {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* logo de la app, enfrentado al boton de volver.
+   en escala de grises igual que en el formulario: el wireframe es
+   monocromo a proposito y el ambar de la marca rompia la paleta */
+.mant-cabecera::after {
+  content: "";
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 40px;
+  height: 40px;
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-pill);
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* testigo de estado, medio lleno = "pronto".
+   el wireframe codifica el estado por forma y no por color */
+.mant-testigo {
+  display: block;
+  width: calc(clamp(44px, 7.5vh, 64px) * var(--ajuste));
+  height: calc(clamp(44px, 7.5vh, 64px) * var(--ajuste));
+  margin: var(--space-3) auto var(--space-2);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-bg) 50%, var(--color-text) 50%);
+}
+
+.mant-cabecera h1 {
+  font-size: 1.75rem;
+  margin: 0 0 4px;
+}
+
+.mant-cabecera p {
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* --- tarjeta de cifras: faltan | se hace a los --- */
+.mant-cifras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  margin: var(--space-3) var(--space-2) 0;
+  padding: var(--space-2) 0;
+}
+
+.mant-cifra {
+  padding: 0 var(--space-2);
+}
+
+/* la segunda cifra dibuja el separador vertical */
+.mant-cifra+.mant-cifra {
+  border-left: 1.5px solid var(--color-line);
+}
+
+.mant-cifra-rotulo {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.mant-cifra-valor {
+  display: block;
+  font-size: 1.6rem;
+}
+
+/* --- rotulos de seccion --- */
+.mant-rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin: var(--space-3) var(--space-2) var(--space-1);
+}
+
+/* --- tarjeta del ultimo registro --- */
+.mant-registro {
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  margin: 0 var(--space-2);
+  padding: var(--space-2);
+}
+
+/* fecha a la izquierda y costo a la derecha, en la misma linea */
+.mant-registro-titular {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-1);
+  font-size: 1.05rem;
+  margin: 0 0 var(--space-1);
+}
+
+/* la miniatura se alinea abajo, junto a la ultima linea de detalle */
+.mant-registro-cuerpo {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.mant-registro-datos {
+  flex: 1;
+  min-width: 0;
+}
+
+.mant-registro-datos p {
+  color: var(--color-muted);
+  margin: 0 0 4px;
+}
+
+.mant-factura {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(clamp(60px, 10vh, 84px) * var(--ajuste));
+  height: calc(clamp(60px, 10vh, 84px) * var(--ajuste));
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+/* --- registros anteriores: fecha | kilometraje | costo --- */
+.mant-historico {
+  list-style: none;
+  margin: 0 var(--space-2);
+  padding: 0;
+}
+
+.mant-historico li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.mant-historico-km {
+  color: var(--color-muted);
+}
+
+.mant-historico-costo {
+  text-align: right;
+}
+
+/* --- nota al pie --- */
+.mant-nota {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: var(--space-2) var(--space-2) var(--space-3);
+}
+
+/* --- accion principal, separada del contenido por una linea --- */
+.mant-pie {
+  display: flex;
+  border-top: 1.5px solid var(--color-line);
+  padding: var(--space-3) var(--space-2);
+  /* el boton cierra la pantalla: sin esto el pie flota a media altura
+     y deja un blanco debajo */
+  margin-top: auto;
+}
+
+.mant-registrar {
+  flex: 1;
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ============================================================
+   Vista 5 - Nuevo registro de servicio
+   ============================================================ */
+
+#ActualizarServicioMantenimiento {
+  /* la barra superior y los campos ponen su propio relleno: la linea
+     bajo la barra tiene que llegar a los dos bordes */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- barra superior: Cancelar | Nuevo registro | Guardar --- */
+.reg-barra {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-bottom: 1.5px solid var(--color-line);
+}
+
+.reg-barra button {
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1.05rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+.reg-cancelar {
+  justify-self: start;
+  color: var(--color-muted);
+}
+
+.reg-guardar {
+  justify-self: end;
+  font-weight: 700;
+}
+
+.reg-titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* el logo va en escala de grises: el wireframe es monocromo a
+   proposito, y el ambar de la marca rompia la paleta */
+.reg-titulo::before {
+  content: "";
+  display: inline-block;
+  vertical-align: text-bottom;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-pill);
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* --- campos del formulario --- */
+.reg-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-2);
+  padding: var(--space-3) var(--space-2);
+  /* ocupa el alto restante y reparte el sobrante entre las filas, en
+     vez de amontonarlo en un hueco blanco al final */
+  flex: 1;
+  align-content: space-between;
+}
+
+.reg-campo {
+  /* por defecto cada campo ocupa el ancho completo */
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* fecha y kilometraje son los unicos que comparten fila */
+.reg-campo-mitad {
+  grid-column: span 1;
+}
+
+.reg-campo label,
+.reg-rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-1);
+}
+
+.reg-campo input,
+.reg-campo textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1.05rem;
+  resize: vertical;
+}
+
+/* --- foto de la factura: la ya cargada y el hueco para agregar --- */
+.reg-fotos {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.reg-miniatura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  width: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
+  height: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+/* marca de imagen dentro de la miniatura */
+.reg-miniatura::before {
+  content: "";
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+}
+
+/* el borde punteado marca lo que aun no esta puesto */
+.reg-agregar {
+  width: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
+  height: calc(clamp(70px, 12vh, 104px) * var(--ajuste));
+  border: 1.5px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-muted);
+  font-family: inherit;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* --- aviso de persistencia --- */
+.reg-aviso {
+  grid-column: 1 / -1;
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   Vista – Actualizar Kilometraje
+   ============================================================ */
+
+#ActualizarKilometraje {
+  max-width: var(--max-width-phone);
+  margin: 0 auto;
+  /* respiro inferior igual al de las demas vistas: el boton cierra la
+     pantalla y no debe quedar un blanco notorio debajo */
+  padding: var(--space-3) var(--space-2) var(--space-2);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* --- header (volver y logo) --- */
+.km-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  position: relative;
+}
+
+.km-volver {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.km-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* --- titulo y subtitulo --- */
+#ActualizarKilometraje > h1 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+#ActualizarKilometraje > .km-subtitle {
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  margin: 0 0 var(--space-3);
+}
+
+/* --- tarjeta kilometraje actual --- */
+.km-display-card {
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-3);
+  background: var(--color-surface);
+}
+
+.km-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.km-value {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  color: var(--color-text);
+}
+
+.km-last-update {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* --- teclado numerico 3 columnas --- */
+.km-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(5px, 1vh, 10px);
+  margin-bottom: var(--space-3);
+}
+
+.km-numpad button {
+  /* alto atado al viewport y no al ancho: con aspect-ratio el teclado
+     no encogia en pantallas bajas y sacaba la vista de cuadro */
+  height: calc(clamp(38px, 7vh, 62px) * var(--ajuste));
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.km-numpad button:active {
+  background: var(--color-line);
+}
+
+/* celda vacia inferior-izquierda */
+.km-numpad .km-empty {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+/* icono borrar */
+.km-numpad .km-backspace {
+  font-size: 1.3rem;
+}
+
+/* --- boton foto odometro --- */
+.km-foto-odometro {
+  border: 1.5px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  margin-bottom: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.km-foto-odometro strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.km-foto-odometro span {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* --- nota de promedio --- */
+.km-promedio {
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+}
+
+/* --- boton guardar --- */
+.km-guardar {
+  width: 100%;
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  /* empuja el boton al fondo: sin esto queda un blanco debajo */
+  margin-top: auto;
+}
+
+.km-guardar:active {
+  opacity: 0.85;
+}
+
+/* ============================================================
+   Vistas 6, 7 y 8 - base comun de bitacora, gastos y documentos
+   ============================================================ */
+
+#Bitacora,
+#Gastos,
+#Documentos {
+  max-width: var(--max-width-phone);
+  margin: 0 auto;
+  /* el relleno inferior deja sitio a la barra de pestanas */
+  padding: 0 0 calc(var(--space-2) + 56px);
+  background: var(--color-bg);
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* --- cabecera comun: titulo, subtitulo y marca --- */
+.vista-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3) var(--space-2);
+}
+
+.vista-header h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.vista-sub {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* logo de la app, en escala de grises: el wireframe es monocromo a
+   proposito y el ambar de la marca rompia la paleta */
+.logo-app {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background-image: url("../imagenes/AldiaLogo.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* --- pildoras de filtro, compartidas por bitacora y gastos --- */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.filtro {
+  padding: 10px 18px;
+  border: 1.5px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* el filtro aplicado se invierte, no cambia de color */
+.filtro.active {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* ============================================================
+   Vista 6 - Bitacora
+   ============================================================ */
+
+.anio-titulo {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  margin: 0 var(--space-3) var(--space-1);
+}
+
+.linea-tiempo {
+  list-style: none;
+  margin: 0 0 var(--space-2);
+  padding: 0 var(--space-3);
+}
+
+.linea-tiempo li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+/* el hilo vertical que une los registros: lo dibuja cada fila desde
+   su propio icono hacia abajo, asi no sobra por arriba ni por abajo */
+.linea-tiempo li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* centrado exacto bajo el icono de 24px: su centro cae en 12px y el
+     margen negativo descuenta el medio grosor del trazo */
+  left: 12px;
+  margin-left: -0.75px;
+  border-left: 1.5px solid var(--color-line);
+}
+
+.linea-tiempo .mant-icono {
+  position: relative;
+  z-index: 1;
+  margin-top: 2px;
+  /* tapa el hilo para que el icono se lea limpio */
+  background-color: var(--color-bg);
+}
+
+/* el medio lleno vuelve a pintar su mitad sobre el fondo opaco */
+.linea-tiempo .icon-pronto {
+  background-image: linear-gradient(90deg, var(--color-text) 50%, transparent 50%);
+}
+
+.linea-tiempo .icon-vencido {
+  background-color: var(--color-text);
+}
+
+.registro-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.registro-info h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.registro-info p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.registro-costo {
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Vista 7 - Gastos
+   ============================================================ */
+
+/* tarjeta oscura del acumulado del anio */
+.gastos-total {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  margin: 0 var(--space-3) var(--space-3);
+  padding: var(--space-3);
+}
+
+.gastos-total-rotulo {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-line);
+  margin-bottom: var(--space-1);
+}
+
+.gastos-total-cifra {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.gastos-total-cifra strong {
+  font-size: 2.4rem;
+  line-height: 1.1;
+}
+
+.gastos-total-cifra span {
+  color: var(--color-line);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gastos-categorias {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0 var(--space-3);
+}
+
+.gastos-categorias li {
+  margin-bottom: var(--space-3);
+}
+
+.categoria-linea {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.categoria-linea span {
+  font-size: 1.05rem;
+}
+
+.categoria-linea strong {
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+/* las categorias de menor peso van en un gris mas claro */
+.barra-progreso-relleno.tenue {
+  background: var(--color-muted);
+}
+
+/* --- grafico de barras por mes --- */
+.grafico-meses {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: end;
+  gap: var(--space-1);
+  height: calc(clamp(90px, 17vh, 150px) * var(--ajuste));
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.mes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 6px;
+}
+
+.mes-barra {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--color-line);
+}
+
+/* el mes en curso se destaca en oscuro */
+.mes-barra.activo {
+  background: var(--color-text);
+}
+
+.mes-letra {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.gastos-promedio {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 0 var(--space-3);
+  padding: var(--space-3);
+  font-weight: 700;
+}
+
+/* ============================================================
+   Vista 8 - Documentos
+   ============================================================ */
+
+.lista-documentos {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: 0 var(--space-3);
+}
+
+.documento {
+  display: flex;
+  flex-direction: column;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  /* son cuatro tarjetas: cada milimetro de relleno se multiplica por
+     cuatro y es lo que sacaba la vista fuera de pantalla */
+  padding: var(--space-2);
+}
+
+.documento-cabecera {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.documento-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.documento-info h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.documento-info p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* el vencido llena la barra entera y en el tono fuerte */
+.barra-progreso-relleno.lleno {
+  background: var(--color-text);
+}
+
+/* la etiqueta de estado cuelga a la derecha, bajo la barra */
+.documento .badge {
+  align-self: flex-end;
+  margin-top: var(--space-1);
+}
+
+/* aviso del recordatorio: mismo bloque pero sin borde y sobre gris */
+.recordatorio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 0 var(--space-3);
+  padding: var(--space-2);
+}
+
+/* la marca acompana al indicador de conexion en la esquina del tablero */
+.tablero-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ============================================================
+   Navegacion - una sola vista visible a la vez
+   ============================================================ */
+
+/* las secciones dejan de apilarse: la app muestra una pantalla y el
+   JS decide cual. los separadores solo servian para el catalogo.
+
+   se oculta la NO activa en vez de mostrar la activa: cada seccion
+   declara su propio display con un selector de id, que gana en
+   especificidad, asi que la regla activa no llegaria a aplicarse.
+   el !important es para ganarle a esos mismos ids al ocultar */
+body>section:not(.vista-activa) {
+  display: none !important;
+}
+
+/* toda vista llega hasta abajo del todo: sin esto el gris del body
+   asoma bajo el contenido cuando la pantalla es mas alta que la vista.
+   dvh descuenta la barra del navegador movil; vh queda de respaldo */
+body>section {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.separador-seccion {
+  display: none;
+}
+
+/* --- tipo de vehiculo elegido en el registro --- */
+.tipo-elegido {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* --- testigo de estado del detalle, segun el servicio abierto --- */
+.mant-testigo.estado-aldia {
+  background: transparent;
+}
+
+.mant-testigo.estado-pronto {
+  background: linear-gradient(90deg, var(--color-bg) 50%, var(--color-text) 50%);
+}
+
+.mant-testigo.estado-vencido {
+  background: var(--color-text);
+}
+
+/* --- aviso de validacion ---
+   flotante sobre la vista, para no descolocar el contenido */
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-4) + 70px);
+  z-index: 10;
+  transform: translate(-50%, 12px);
+  max-width: calc(var(--max-width-phone) - var(--space-4));
+  margin: 0;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.aviso.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* --- salida del tablero hacia la pantalla de registro (vista 1) --- */
+.btn-registro {
+  border: 1.5px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
