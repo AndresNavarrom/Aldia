@@ -139,6 +139,9 @@ function mostrarVista(id) {
   vistas.forEach(function (s) {
     s.classList.toggle('vista-activa', s.id === id);
   });
+  /* los dias que faltan cambian con el calendario: se recalculan cada
+     vez que se entra a la lista, no solo al abrir la app */
+  if (id === 'Documentos') pintarDocumentos();
   window.scrollTo(0, 0);
   ajustarAltura();
 }
@@ -540,6 +543,388 @@ document.querySelectorAll('.filtros').forEach(function (grupo) {
       f.classList.add('active');
     });
   });
+});
+
+/* ============================================================
+   Vista 8 - Documentos y su detalle
+   ============================================================ */
+
+/* diasEjemplo solo se usa la primera vez, para sembrar fechas relativas
+   a hoy: asi la lista de ejemplo conserva los estados del wireframe sin
+   importar el dia en que se abra la app. despues cada fecha es real y
+   se guarda tal cual */
+const DOCUMENTOS = {
+  soat: {
+    nombre: 'SOAT',
+    descripcion: 'Seguro obligatorio de accidentes de tránsito',
+    diasEjemplo: 28
+  },
+  tecnomecanica: {
+    nombre: 'Revisión tecnomecánica',
+    descripcion: 'Revisión técnico-mecánica y de emisiones',
+    diasEjemplo: 204
+  },
+  impuesto: {
+    nombre: 'Impuesto vehicular',
+    descripcion: 'Impuesto anual sobre el vehículo',
+    diasEjemplo: 247,
+    /* el wireframe lo muestra como pagado y no como pendiente */
+    pagoAnual: true
+  },
+  seguro: {
+    nombre: 'Seguro todo riesgo',
+    descripcion: 'Póliza voluntaria del vehículo',
+    diasEjemplo: -10
+  }
+};
+
+/* leyenda del wireframe: pronto = faltan menos de 30 dias */
+const DIAS_PRONTO = 30;
+const DIAS_PERIODO = 365;
+
+/* --- fechas: siempre a medianoche local, para contar dias enteros --- */
+const MESES_LARGOS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio',
+  'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const MESES_CORTOS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun',
+  'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+function hoy() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function desdeISO(iso) {
+  const p = iso.split('-').map(Number);
+  return new Date(p[0], p[1] - 1, p[2]);
+}
+
+function aISO(d) {
+  const dos = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + dos(d.getMonth() + 1) + '-' + dos(d.getDate());
+}
+
+function sumarDias(d, n) {
+  const r = new Date(d);
+  r.setDate(r.getDate() + n);
+  return r;
+}
+
+/* redondeo y no division exacta: un cambio de horario deja el dia en
+   23 o 25 horas y truncar daria un dia de menos */
+function diasHasta(iso) {
+  return Math.round((desdeISO(iso) - hoy()) / 86400000);
+}
+
+function fechaLarga(d) {
+  return d.getDate() + ' de ' + MESES_LARGOS[d.getMonth()] + ' de ' + d.getFullYear();
+}
+
+function fechaCorta(d) {
+  return d.getDate() + ' ' + MESES_CORTOS[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function plural(n, palabra) {
+  return n + ' ' + palabra + (n === 1 ? '' : 's');
+}
+
+function asegurarDocumentos() {
+  if (estado.documentos) return;
+  estado.documentos = {};
+  Object.keys(DOCUMENTOS).forEach(function (id) {
+    estado.documentos[id] = {
+      vence: aISO(sumarDias(hoy(), DOCUMENTOS[id].diasEjemplo))
+    };
+  });
+  guardarEstado(estado);
+}
+
+/* toda la presentacion de un documento sale de su fecha de vencimiento */
+function situacion(id, iso) {
+  const dias = diasHasta(iso);
+  const vence = desdeISO(iso);
+  const info = DOCUMENTOS[id];
+
+  const estadoDoc = dias < 0 ? 'vencido' : dias <= DIAS_PRONTO ? 'pronto' : 'aldia';
+  const transcurrido = Math.min(Math.max(DIAS_PERIODO - dias, 0), DIAS_PERIODO);
+
+  let subtitulo, etiqueta;
+  if (estadoDoc === 'vencido') {
+    subtitulo = 'Venció el ' + fechaLarga(vence);
+    etiqueta = 'Vencido hace ' + plural(-dias, 'día');
+  } else if (dias === 0) {
+    subtitulo = 'Vence hoy';
+    etiqueta = 'Vence hoy';
+  } else if (estadoDoc === 'aldia' && info.pagoAnual) {
+    subtitulo = 'Pagado el ' + fechaLarga(sumarDias(vence, -DIAS_PERIODO));
+    etiqueta = 'Al día';
+  } else {
+    subtitulo = 'Vence el ' + fechaLarga(vence);
+    etiqueta = 'Faltan ' + plural(dias, 'día');
+  }
+
+  return {
+    dias: dias,
+    vence: vence,
+    estado: estadoDoc,
+    subtitulo: subtitulo,
+    etiqueta: etiqueta,
+    progreso: estadoDoc === 'vencido' ? 100 : Math.round(transcurrido / DIAS_PERIODO * 100)
+  };
+}
+
+/* --- lista --- */
+const vistaDocumentos = document.querySelector('#Documentos');
+
+function pintarDocumentos() {
+  asegurarDocumentos();
+  vistaDocumentos.querySelectorAll('.documento').forEach(function (tarjeta) {
+    const id = tarjeta.dataset.documento;
+    const s = situacion(id, estado.documentos[id].vence);
+
+    tarjeta.querySelector('.mant-icono').className = 'mant-icono icon-' + s.estado;
+    tarjeta.querySelector('.documento-info h3').textContent = DOCUMENTOS[id].nombre;
+    tarjeta.querySelector('.documento-info p').textContent = s.subtitulo;
+
+    const relleno = tarjeta.querySelector('.barra-progreso-relleno');
+    relleno.style.width = s.progreso + '%';
+    relleno.classList.toggle('lleno', s.estado === 'vencido');
+
+    const etiqueta = tarjeta.querySelector('.badge');
+    etiqueta.className = 'badge badge-' + s.estado;
+    etiqueta.textContent = s.etiqueta;
+  });
+}
+
+vistaDocumentos.querySelectorAll('.documento').forEach(function (tarjeta) {
+  function abrir() { abrirDocumento(tarjeta.dataset.documento); }
+  tarjeta.addEventListener('click', abrir);
+  tarjeta.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); }
+  });
+});
+
+/* --- archivos ---
+   cada adjunto va en su propia clave de localStorage y no dentro del
+   estado general: asi una foto pesada no obliga a reescribir todo lo
+   demas cada vez que se guarda un kilometraje */
+const LADO_MAXIMO_FOTO = 1600;
+const CALIDAD_FOTO = 0.8;
+const PESO_MAXIMO_PDF = 1.5 * 1024 * 1024;
+
+function claveArchivo(id) {
+  return CLAVE + ':documento:' + id;
+}
+
+function leerArchivo(id) {
+  try {
+    return JSON.parse(localStorage.getItem(claveArchivo(id)));
+  } catch (e) {
+    return null;
+  }
+}
+
+function leerComoDataURL(archivo) {
+  return new Promise(function (ok, falla) {
+    const lector = new FileReader();
+    lector.onload = function () { ok(lector.result); };
+    lector.onerror = function () { falla(new Error('No se pudo leer el archivo.')); };
+    lector.readAsDataURL(archivo);
+  });
+}
+
+/* una foto de celular pesa varios megas y localStorage apenas da unos
+   pocos para toda la app: se reduce a 1600 px y se recomprime en JPEG,
+   que para leer un SOAT sobra */
+function reducirFoto(archivo) {
+  return new Promise(function (ok, falla) {
+    const url = URL.createObjectURL(archivo);
+    const img = new Image();
+    img.onload = function () {
+      const escala = Math.min(1, LADO_MAXIMO_FOTO / Math.max(img.width, img.height));
+      const lienzo = document.createElement('canvas');
+      lienzo.width = Math.round(img.width * escala);
+      lienzo.height = Math.round(img.height * escala);
+      lienzo.getContext('2d').drawImage(img, 0, 0, lienzo.width, lienzo.height);
+      URL.revokeObjectURL(url);
+      ok(lienzo.toDataURL('image/jpeg', CALIDAD_FOTO));
+    };
+    img.onerror = function () {
+      URL.revokeObjectURL(url);
+      falla(new Error('No se pudo abrir la foto. Pruebe con JPG o PNG.'));
+    };
+    img.src = url;
+  });
+}
+
+function prepararArchivo(archivo) {
+  const esPdf = archivo.type === 'application/pdf';
+  const esFoto = archivo.type.indexOf('image/') === 0;
+
+  if (!esPdf && !esFoto) {
+    return Promise.reject(new Error('Solo se admiten fotos o PDF.'));
+  }
+  if (esPdf && archivo.size > PESO_MAXIMO_PDF) {
+    return Promise.reject(new Error('El PDF pesa más de 1,5 MB.'));
+  }
+
+  const lectura = esPdf ? leerComoDataURL(archivo) : reducirFoto(archivo);
+  return lectura.then(function (datos) {
+    return {
+      nombre: archivo.name,
+      tipo: esPdf ? 'pdf' : 'foto',
+      datos: datos,
+      /* el base64 ocupa 4 caracteres por cada 3 bytes */
+      bytes: Math.round((datos.length - datos.indexOf(',') - 1) * 3 / 4),
+      fecha: aISO(hoy())
+    };
+  });
+}
+
+function formatearPeso(bytes) {
+  return bytes < 1024 * 1024
+    ? Math.max(1, Math.round(bytes / 1024)) + ' KB'
+    : (bytes / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB';
+}
+
+/* --- detalle ---
+   los cambios quedan en borrador hasta pulsar Guardar; volver atras los
+   descarta. archivoPendiente: undefined = sin cambios, null = quitar,
+   objeto = archivo nuevo */
+const detalleDoc = document.querySelector('#DetalleDocumento');
+const campoVence = detalleDoc.querySelector('#DocVence');
+const campoArchivo = detalleDoc.querySelector('#DocArchivo');
+const visor = detalleDoc.querySelector('.visor');
+let documentoActivo = 'soat';
+let archivoPendiente;
+
+function abrirDocumento(id) {
+  asegurarDocumentos();
+  documentoActivo = id;
+  archivoPendiente = undefined;
+  campoArchivo.value = '';
+
+  detalleDoc.querySelector('.doc-nombre').textContent = DOCUMENTOS[id].nombre;
+  detalleDoc.querySelector('.doc-descripcion').textContent = DOCUMENTOS[id].descripcion;
+  campoVence.value = estado.documentos[id].vence;
+
+  pintarCifrasDocumento();
+  pintarAdjunto();
+  mostrarVista('DetalleDocumento');
+}
+
+/* se repinta al cambiar la fecha, antes de guardar, para que se vea
+   como quedaria el documento */
+function pintarCifrasDocumento() {
+  if (!campoVence.value) return;
+  const s = situacion(documentoActivo, campoVence.value);
+
+  detalleDoc.querySelector('.mant-testigo').className = 'mant-testigo estado-' + s.estado;
+  detalleDoc.querySelector('.doc-rotulo-dias').textContent =
+    s.estado === 'vencido' ? 'Vencido hace' : 'Faltan';
+  detalleDoc.querySelector('.doc-dias').textContent =
+    s.dias === 0 ? 'Hoy' : plural(Math.abs(s.dias), 'día');
+  detalleDoc.querySelector('.doc-rotulo-fecha').textContent =
+    s.estado === 'vencido' ? 'Venció el' : 'Vence el';
+  detalleDoc.querySelector('.doc-fecha').textContent = fechaCorta(s.vence);
+}
+
+function archivoVisible() {
+  return archivoPendiente !== undefined ? archivoPendiente : leerArchivo(documentoActivo);
+}
+
+function pintarAdjunto() {
+  const a = archivoVisible();
+  detalleDoc.querySelector('.doc-subir').hidden = !!a;
+  detalleDoc.querySelector('.doc-adjunto').hidden = !a;
+  if (!a) {
+    ajustarAltura();
+    return;
+  }
+
+  const miniatura = detalleDoc.querySelector('.doc-miniatura');
+  const pdf = detalleDoc.querySelector('.doc-pdf');
+  miniatura.hidden = a.tipo !== 'foto';
+  pdf.hidden = a.tipo !== 'pdf';
+  if (a.tipo === 'foto') miniatura.src = a.datos;
+
+  detalleDoc.querySelector('.doc-adjunto-nombre').textContent = a.nombre;
+  detalleDoc.querySelector('.doc-adjunto-detalle').textContent =
+    formatearPeso(a.bytes) + ' · ' + fechaCorta(desdeISO(a.fecha));
+  ajustarAltura();
+}
+
+campoVence.addEventListener('change', pintarCifrasDocumento);
+
+campoArchivo.addEventListener('change', function () {
+  const archivo = campoArchivo.files[0];
+  if (!archivo) return;
+  prepararArchivo(archivo)
+    .then(function (a) {
+      archivoPendiente = a;
+      pintarAdjunto();
+    })
+    .catch(function (e) {
+      avisar(detalleDoc, e.message);
+    })
+    .then(function () {
+      /* sin esto, elegir otra vez el mismo archivo no dispara change */
+      campoArchivo.value = '';
+    });
+});
+
+detalleDoc.querySelector('.doc-quitar').addEventListener('click', function () {
+  archivoPendiente = null;
+  pintarAdjunto();
+});
+
+/* una foto se puede ver en grande; un PDF no, porque el WebView de
+   Android no trae visor de PDF integrado */
+detalleDoc.querySelector('.doc-vista-previa').addEventListener('click', function () {
+  const a = archivoVisible();
+  if (!a) return;
+  if (a.tipo !== 'foto') {
+    avisar(detalleDoc, 'El PDF está guardado, pero no se puede previsualizar aquí.');
+    return;
+  }
+  visor.querySelector('img').src = a.datos;
+  visor.hidden = false;
+});
+
+visor.addEventListener('click', function () {
+  visor.hidden = true;
+});
+
+detalleDoc.querySelector('.doc-volver').addEventListener('click', function () {
+  visor.hidden = true;
+  mostrarVista('Documentos');
+});
+
+detalleDoc.querySelector('.doc-guardar').addEventListener('click', function () {
+  if (!campoVence.value) {
+    avisar(detalleDoc, 'Indique la fecha de vencimiento.');
+    return;
+  }
+
+  /* el archivo va primero: es lo que puede no caber. si falla, no se
+     toca nada y el usuario conserva su borrador */
+  if (archivoPendiente !== undefined) {
+    try {
+      if (archivoPendiente === null) {
+        localStorage.removeItem(claveArchivo(documentoActivo));
+      } else {
+        localStorage.setItem(claveArchivo(documentoActivo), JSON.stringify(archivoPendiente));
+      }
+    } catch (e) {
+      avisar(detalleDoc, 'No queda espacio para guardar el archivo. Pruebe con uno más liviano.');
+      return;
+    }
+  }
+
+  estado.documentos[documentoActivo].vence = campoVence.value;
+  guardarEstado(estado);
+  visor.hidden = true;
+  mostrarVista('Documentos');
 });
 
 /* ============================================================

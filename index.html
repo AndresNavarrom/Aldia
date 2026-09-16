@@ -553,7 +553,7 @@ Revisar fuga leve en el próximo.</textarea>
     </header>
 
     <ul class="lista-documentos">
-      <li class="documento">
+      <li class="documento" data-documento="soat" role="button" tabindex="0">
         <div class="documento-cabecera">
           <span class="mant-icono icon-pronto"></span>
           <div class="documento-info">
@@ -566,7 +566,7 @@ Revisar fuga leve en el próximo.</textarea>
         </div>
         <span class="badge badge-pronto">Faltan 32 días</span>
       </li>
-      <li class="documento">
+      <li class="documento" data-documento="tecnomecanica" role="button" tabindex="0">
         <div class="documento-cabecera">
           <span class="mant-icono icon-aldia"></span>
           <div class="documento-info">
@@ -579,7 +579,7 @@ Revisar fuga leve en el próximo.</textarea>
         </div>
         <span class="badge badge-aldia">Faltan 204 días</span>
       </li>
-      <li class="documento">
+      <li class="documento" data-documento="impuesto" role="button" tabindex="0">
         <div class="documento-cabecera">
           <span class="mant-icono icon-aldia"></span>
           <div class="documento-info">
@@ -592,7 +592,7 @@ Revisar fuga leve en el próximo.</textarea>
         </div>
         <span class="badge badge-aldia">Al día</span>
       </li>
-      <li class="documento">
+      <li class="documento" data-documento="seguro" role="button" tabindex="0">
         <div class="documento-cabecera">
           <span class="mant-icono icon-vencido"></span>
           <div class="documento-info">
@@ -635,6 +635,71 @@ Revisar fuga leve en el próximo.</textarea>
     </nav>
 
   </section>
+
+  <hr class="separador-seccion">
+
+  <section id="DetalleDocumento">
+
+    <header class="mant-cabecera">
+      <button class="mant-volver doc-volver" aria-label="Volver a documentos">&lsaquo;</button>
+      <span class="mant-testigo" aria-hidden="true"></span>
+      <h1 class="doc-nombre">SOAT</h1>
+      <p class="doc-descripcion">Seguro obligatorio de accidentes de tránsito</p>
+    </header>
+
+    <div class="mant-cifras">
+      <div class="mant-cifra">
+        <span class="mant-cifra-rotulo doc-rotulo-dias">Faltan</span>
+        <strong class="mant-cifra-valor doc-dias">28 días</strong>
+      </div>
+      <div class="mant-cifra">
+        <span class="mant-cifra-rotulo doc-rotulo-fecha">Vence el</span>
+        <strong class="mant-cifra-valor doc-fecha">14 oct 2026</strong>
+      </div>
+    </div>
+
+    <h2 class="mant-rotulo">Fecha de vencimiento</h2>
+    <div class="doc-campo">
+      <input type="date" id="DocVence" aria-label="Fecha de vencimiento">
+    </div>
+
+    <h2 class="mant-rotulo">Archivo del documento</h2>
+    <div class="doc-archivo">
+      <input type="file" id="DocArchivo" accept="image/*,application/pdf" hidden>
+
+      <label class="doc-subir" for="DocArchivo">
+        <span class="doc-subir-mas" aria-hidden="true">+</span>
+        <span>Subir foto o PDF</span>
+      </label>
+
+      <div class="doc-adjunto" hidden>
+        <button class="doc-vista-previa" aria-label="Ver documento en grande">
+          <img class="doc-miniatura" alt="">
+          <span class="doc-pdf" hidden>PDF</span>
+        </button>
+        <div class="doc-adjunto-pie">
+          <div class="doc-adjunto-info">
+            <strong class="doc-adjunto-nombre"></strong>
+            <span class="doc-adjunto-detalle"></span>
+          </div>
+          <div class="doc-adjunto-acciones">
+            <label class="doc-accion" for="DocArchivo">Cambiar</label>
+            <button class="doc-accion doc-quitar">Quitar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mant-pie">
+      <button class="mant-registrar doc-guardar">Guardar</button>
+    </div>
+
+    <div class="visor" hidden>
+      <img alt="Documento adjunto">
+    </div>
+
+  </section>
+
 
 </body>
 
